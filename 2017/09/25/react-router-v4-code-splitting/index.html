@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="webpack,react-router," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="吴锴的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="背景介绍React Router v4 推出已有六个月了，网络上因版本升级带来的哀嚎仿佛就在半年前。我在使用这个版本的 React Router 时，也遇到了一些问题，比如这里所说的代码分割，所以写了这篇博客作为总结，希望能对他人有所帮助。 什么是代码分割（code splitting）在用户浏览我们的网站时，一种方案是一次性地将所有的 JavaScript 代码都下载下来，可想而知，代码体积会很">
+<meta name="keywords" content="webpack,react-router">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Router v4 之代码分割：从放弃到入门">
+<meta property="og:url" content="http://noiron.github.io/2017/09/25/react-router-v4-code-splitting/index.html">
+<meta property="og:site_name" content="吴锴的博客">
+<meta property="og:description" content="背景介绍React Router v4 推出已有六个月了，网络上因版本升级带来的哀嚎仿佛就在半年前。我在使用这个版本的 React Router 时，也遇到了一些问题，比如这里所说的代码分割，所以写了这篇博客作为总结，希望能对他人有所帮助。 什么是代码分割（code splitting）在用户浏览我们的网站时，一种方案是一次性地将所有的 JavaScript 代码都下载下来，可想而知，代码体积会很">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2017-08-14-bundle-loader.png">
+<meta property="og:updated_time" content="2018-12-31T14:15:52.768Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Router v4 之代码分割：从放弃到入门">
+<meta name="twitter:description" content="背景介绍React Router v4 推出已有六个月了，网络上因版本升级带来的哀嚎仿佛就在半年前。我在使用这个版本的 React Router 时，也遇到了一些问题，比如这里所说的代码分割，所以写了这篇博客作为总结，希望能对他人有所帮助。 什么是代码分割（code splitting）在用户浏览我们的网站时，一种方案是一次性地将所有的 JavaScript 代码都下载下来，可想而知，代码体积会很">
+<meta name="twitter:image" content="http://noiron.github.io/asset/images/2017-08-14-bundle-loader.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://noiron.github.io/2017/09/25/react-router-v4-code-splitting/"/>
+
+
+
+
+
+  <title>React Router v4 之代码分割：从放弃到入门 | 吴锴的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111511044-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吴锴的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life? Don't talk to me about life!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-demo">
+          <a href="/demo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            个人项目
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2017/09/25/react-router-v4-code-splitting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="noiron">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吴锴的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">React Router v4 之代码分割：从放弃到入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-25T00:00:00+08:00">
+                2017-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>React Router v4 推出已有六个月了，网络上因版本升级带来的哀嚎仿佛就在半年前。我在使用这个版本的 React Router 时，也遇到了一些问题，比如这里所说的代码分割，所以写了这篇博客作为总结，希望能对他人有所帮助。</p>
+<h2 id="什么是代码分割（code-splitting）"><a href="#什么是代码分割（code-splitting）" class="headerlink" title="什么是代码分割（code splitting）"></a>什么是代码分割（code splitting）</h2><p>在用户浏览我们的网站时，一种方案是一次性地将所有的 JavaScript 代码都下载下来，可想而知，代码体积会很可观，同时这些代码中的一部分可能是用户此时并不需要的。另一种方案是按需加载，将 JavaScript 代码分成多个块（chunk），用户只需下载当前浏览所需的代码即可，用户进入到其它页面或需要渲染其它部分时，才加载更多的代码。这后一种方案中用到的就是所谓的<strong>代码分割（code splitting）</strong>了。</p>
+<a id="more"></a>
+<p>当然为了实现代码分割，仍然需要和 webpack 搭配使用，先来看看 webpack 的文档中是如何介绍的。</p>
+<p><a href="https://webpack.js.org/guides/code-splitting/" target="_blank" rel="noopener">Webpack 文档的 code splitting 页面</a>中介绍了三种方法：</p>
+<ol>
+<li>利用 webpack 中的 <code>entry</code> 配置项来进行手动分割</li>
+<li>利用 <code>CommonsChunkPlugin</code> 插件来提取重复 chunk</li>
+<li>动态引入（Dynamic Imports）</li>
+</ol>
+<p>你可以读一下此篇文档，从而对 webpack 是如何进行代码分割的有个基本的认识。本文后面将提到的方案就是基于上述的第三种方法。</p>
+<h2 id="React-Router-中如何进行代码分割"><a href="#React-Router-中如何进行代码分割" class="headerlink" title="React Router 中如何进行代码分割"></a>React Router 中如何进行代码分割</h2><p>在 v4 之前的版本中，一般是利用 <code>require.ensure()</code> 来实现代码分割的，而在 v4 中又是如何处理的呢？</p>
+<h3 id="使用-bundle-loader-的方案"><a href="#使用-bundle-loader-的方案" class="headerlink" title="使用 bundle-loader 的方案"></a>使用 bundle-loader 的方案</h3><p>在 React Router v4 官方给出的<a href="https://reacttraining.com/react-router/web/guides/code-splitting" target="_blank" rel="noopener">文档</a>中，使用了名为 <a href="https://github.com/webpack-contrib/bundle-loader" target="_blank" rel="noopener"><code>bundle-loader</code></a> 的工具来实现这一功能。</p>
+<p>其主要实现思路为创建一个名为 <code>&lt;Bundle&gt;</code> 的组件，当应用匹配到了对应的路径时，该组件会动态地引入所需模块并将自身渲染出来。</p>
+<p>示例代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> loadSomething <span class="keyword">from</span> <span class="string">'bundle-loader?lazy!./Something'</span></span><br><span class="line"></span><br><span class="line">&lt;Bundle load=&#123;loadSomething&#125;&gt;</span><br><span class="line">  &#123;(mod) =&gt; (</span><br><span class="line">    <span class="comment">// do something w/ the module</span></span><br><span class="line">  )&#125;</span><br><span class="line">&lt;<span class="regexp">/Bundle&gt;</span></span><br></pre></td></tr></table></figure>
+<p>更多关于 <code>&lt;Bundle&gt;</code> 组件的实现可参见上面给出的文档地址。</p>
+<h3 id="使用-bundle-loader-方法存在的不足之处"><a href="#使用-bundle-loader-方法存在的不足之处" class="headerlink" title="使用 bundle-loader 方法存在的不足之处"></a>使用 bundle-loader 方法存在的不足之处</h3><p>这里提到的两个缺点我们在实际开发工作中遇到的，与我们的项目特定结构相关，所以你可能并不会遇上。</p>
+<p>一、 代码丑陋</p>
+<p>由于我们的项目是从 React Router v2, v3 升级过来的，在之前的版本中对于异步加载的实现采用了集中配置的方案，即项目中存在一个 <code>Routes.js</code> 文件，整个项目的路径设置都放在了该文件中，这样方便集中管理。</p>
+<p>但是在 React Router v4 版本中，由于使用了 <code>bundle-loader</code> 来实现代码分割，必须使用以下写法来引入组件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> loadSomething <span class="keyword">from</span> <span class="string">'bundle-loader?lazy!./Something'</span></span><br></pre></td></tr></table></figure>
+<p>而我们的 <code>reducer</code> 和 <code>saga</code> 文件也需要使用此种方法引入，导致 <code>Routes.js</code> 文件顶端将会出现一长串及其冗长的组件引入代码，不易维护。如下所示：</p>
+<p><img src="/asset/images/2017-08-14-bundle-loader.png" alt=""></p>
+<p>当用这种方法引入的模块数量过多时，文件将会不忍直视。</p>
+<p>二、 存在莫名的组件生命周期Bug</p>
+<p>在使用了这种方案后，在某些页面中会出现这样的一个Bug：应用中进行页面跳转时，上一个页面的组件会在 <code>unmount</code> 之后重新创建一次。表现为已经到了下一页面，但是会调用存在于跳转前页面中的组件的 <code>componentDidMount</code> 方法。</p>
+<p>当然，这个Bug只与我自己的特定项目有关，错误原因可能与 <code>bundle-loader</code> 并无太大关联。不过因为一直无法解决这一问题，所以决定换一个方案来代替 <code>bundle-loader</code>。</p>
+<h2 id="使用-import-的新方案"><a href="#使用-import-的新方案" class="headerlink" title="使用 import() 的新方案"></a>使用 import() 的新方案</h2><p>Dan Abramov 在这个 create-react-app 的 issue 中给出了 <code>bundle-loader</code> 的替代方案的链接：<a href="http://serverless-stack.com/chapters/code-splitting-in-create-react-app.html" target="_blank" rel="noopener">Code Splitting in Create React App</a>，可以参考该篇文章来实现我们项目中的代码分割功能。</p>
+<h3 id="代码分割和-React-Router-v4"><a href="#代码分割和-React-Router-v4" class="headerlink" title="代码分割和 React Router v4"></a>代码分割和 React Router v4</h3><p>一个常规的 React Router 项目结构如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码出处：</span></span><br><span class="line"><span class="comment">// http://serverless-stack.com/chapters/code-splitting-in-create-react-app.html</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Import the components */</span></span><br><span class="line"><span class="keyword">import</span> Home <span class="keyword">from</span> <span class="string">'./containers/Home'</span>;</span><br><span class="line"><span class="keyword">import</span> Posts <span class="keyword">from</span> <span class="string">'./containers/Posts'</span>;</span><br><span class="line"><span class="keyword">import</span> NotFound <span class="keyword">from</span> <span class="string">'./containers/NotFound'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Use components to define routes */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> () =&gt; (</span><br><span class="line">  &lt;Switch&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/"</span> exact component=&#123;Home&#125; /&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/posts/:id"</span> exact component=&#123;Posts&#125; /&gt;</span><br><span class="line">    &lt;Route component=&#123;NotFound&#125; /&gt;</span><br><span class="line">  &lt;<span class="regexp">/Switch&gt;</span></span><br><span class="line"><span class="regexp">);</span></span><br></pre></td></tr></table></figure>
+<p>首先根据我们的 route 引入相应的组件，然后将其用于定义相应的 <code>&lt;Route&gt;</code>。</p>
+<p>但是，不管匹配到了哪一个 route，我们这里都一次性地引入所有的组件。而我们想要的效果是当匹配了一个 route，则只引入与其对应的组件，这就需要实现代码分割了。</p>
+<h3 id="创建一个异步组件（Async-Component）"><a href="#创建一个异步组件（Async-Component）" class="headerlink" title="创建一个异步组件（Async Component）"></a>创建一个异步组件（Async Component）</h3><p>异步组件，即只有在需要的时候才会引入。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">asyncComponent</span>(<span class="params">importComponent</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">AsyncComponent</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">      <span class="keyword">super</span>(props);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">this</span>.state = &#123;</span><br><span class="line">        component: <span class="literal">null</span>,</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> componentDidMount() &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; <span class="attr">default</span>: component &#125; = <span class="keyword">await</span> importComponent();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">        component: component</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render() &#123;</span><br><span class="line">      <span class="keyword">const</span> C = <span class="keyword">this</span>.state.component;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> C</span><br><span class="line">        ? <span class="xml"><span class="tag">&lt;<span class="name">C</span> &#123;<span class="attr">...this.props</span>&#125; /&gt;</span></span></span><br><span class="line"><span class="xml">        : null;</span></span><br><span class="line"><span class="xml">    &#125;</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">  return AsyncComponent;</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+<p><code>asyncComponent</code> 接收一个 <code>importComponent</code> 函数作为参数，<code>importComponent()</code> 在被调用时会动态引入给定的组件。</p>
+<p>在 <code>componentDidMount()</code>中，调用传入的 <code>importComponent()</code>，并将动态引入的组件保存在 state 中。</p>
+<h3 id="使用异步组件（Async-Component）"><a href="#使用异步组件（Async-Component）" class="headerlink" title="使用异步组件（Async Component）"></a>使用异步组件（Async Component）</h3><p>不再使用如下静态引入组件的方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Home <span class="keyword">from</span> <span class="string">'./containers/Home'</span>;</span><br></pre></td></tr></table></figure>
+<p>而是使用 <code>asyncComponent</code> 方法来动态引入组件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> AsyncHome = asyncComponent(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./containers/Home'</span>));</span><br></pre></td></tr></table></figure>
+<p>此处的 <code>import()</code> 来自于新的 ES 提案，其结果是一个 Promise，这是一种动态引入模块的方法，即上文 webpack 文档中提到的第三种方法。更多关于 <code>import()</code> 的信息可以查看这篇文章：<a href="http://2ality.com/2017/01/import-operator.html" target="_blank" rel="noopener">ES proposal: import() – dynamically importing ES modules</a>。</p>
+<p>注意这里并没有进行组件的引入，而是传给了 <code>asyncComponent</code> 一个函数，它将在 <code>AsyncHome</code> 组件被创建时进行动态引入。同时，这种传入一个函数作为参数，而非直接传入一个字符串的写法能够让 webpack 意识到此处需要进行代码分割。</p>
+<p>最后如下使用这个 <code>AsyncHome</code> 组件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Route path=<span class="string">"/"</span> exact component=&#123;AsyncHome&#125; /&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="对于-reducer-和-saga-文件的异步加载"><a href="#对于-reducer-和-saga-文件的异步加载" class="headerlink" title="对于 reducer 和 saga 文件的异步加载"></a>对于 reducer 和 saga 文件的异步加载</h3><p>在上面的这篇文章中，只给出了对于组件的异步引入的解决方案，而在我们的项目中还存在将 <code>reducer</code> 和 <code>saga</code> 文件异步引入的需求。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">processReducer(reducer) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(reducer)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Promise</span>.all(reducer.map(<span class="function"><span class="params">r</span> =&gt;</span> <span class="keyword">this</span>.processReducer(r)));</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> reducer === <span class="string">'object'</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> key = <span class="built_in">Object</span>.keys(reducer)[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">return</span> reducer[key]().then(<span class="function"><span class="params">x</span> =&gt;</span> &#123;</span><br><span class="line">            injectAsyncReducer(key, x.default);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将需要异步引入的 reducer 作为参数传入，利用 Promise 来对其进行异步处理。在 <code>componentDidMount</code> 方法中等待 reducer 处理完毕后在将组件保存在 state 中，对于 saga 文件同理。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// componentDidMount 中做如下修改</span></span><br><span class="line"><span class="keyword">async</span> componentDidMount() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; <span class="attr">default</span>: component &#125; = <span class="keyword">await</span> importComponent();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Promise</span>.all([<span class="keyword">this</span>.processReducer(reducers),</span><br><span class="line">            <span class="keyword">this</span>.processSaga(sagas)]).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            component</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面对 <code>reducer</code> 文件进行处理时，使用了这样的一行代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">injectAsyncReducer(key, x.default);</span><br></pre></td></tr></table></figure>
+<p>其作用是利用 Redux 中的 <code>replaceReducer()</code> 方法来修改 reducer，具体代码见下。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// reducerList 是你当前的 reducer 列表</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createReducer</span>(<span class="params">asyncReducers</span>) </span>&#123;</span><br><span class="line">    asyncReducers</span><br><span class="line">    &amp;&amp; !reducersList[<span class="built_in">Object</span>.keys(asyncReducers)[<span class="number">0</span>]]</span><br><span class="line">    &amp;&amp; (reducersList = <span class="built_in">Object</span>.assign(&#123;&#125;, reducersList, asyncReducers));</span><br><span class="line">    <span class="keyword">return</span> combineReducers(reducersList);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">injectAsyncReducer</span>(<span class="params">name, asyncReducer</span>) </span>&#123;</span><br><span class="line">    store.replaceReducer(createReducer(&#123; [name]: asyncReducer &#125;));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完整的 asyncComponent 代码可见以下 gist，注意一点，为了能够灵活地使用不同的 <code>injectAsyncReducer</code>, <code>injectAsyncSaga</code> 函数，代码中使用了高阶组件的写法，你可以直接使用内层的 <code>asyncComponent</code> 函数。</p>
+<script src="https://gist.github.com/noiron/7f774dea55bcc52921e5bc5a50c2aa10.js"></script>
+
+<h2 id="asyncComponent-方法与-React-Router-v4-的结合使用"><a href="#asyncComponent-方法与-React-Router-v4-的结合使用" class="headerlink" title="asyncComponent 方法与 React Router v4 的结合使用"></a>asyncComponent 方法与 React Router v4 的结合使用</h2><h3 id="组件、reducer、saga-的异步引入"><a href="#组件、reducer、saga-的异步引入" class="headerlink" title="组件、reducer、saga 的异步引入"></a>组件、reducer、saga 的异步引入</h3><p>考虑到代码可读性，可在你的 <code>route</code> 目录下新建一个 <code>asyncImport.js</code> 文件，将需要异步引入的模块写在该文件中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入前面所写的异步加载函数</span></span><br><span class="line"><span class="keyword">import</span> asyncComponent <span class="keyword">from</span> <span class="string">'route/AsyncComponent'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 只传入第一个参数，只需要组件</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> AsyncHomePage = asyncComponent(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./homepage/Homepage'</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 传入三个参数，分别为 component, reducer, saga</span></span><br><span class="line"><span class="comment">// 注意这里的第二个参数 reducer 是一个对象，其键值对应于redux store中存放的键值</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> AsyncArticle = asyncComponent(</span><br><span class="line">    () =&gt; <span class="keyword">import</span>(<span class="string">'./market/Common/js/Container'</span>),</span><br><span class="line">    &#123; <span class="attr">market</span>: <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./market/Common/js/reducer'</span>) &#125;,</span><br><span class="line">    () =&gt; <span class="keyword">import</span>(<span class="string">'./market/Saga/watcher'</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// reducer 和 saga 参数可以传入数组</span></span><br><span class="line"><span class="comment">// 当只有 saga，而无 reducer 参数时，第二项参数传入空数组 []</span></span><br><span class="line"><span class="keyword">const</span> UserContainer = <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./user/Common/js/Container'</span>);</span><br><span class="line"><span class="keyword">const</span> userReducer = &#123; <span class="attr">userInfo</span>: <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./user/Common/js/userInfoReducer'</span>) &#125;;</span><br><span class="line"><span class="keyword">const</span> userSaga = <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./user/Saga/watcher'</span>);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> AsyncUserContainer = asyncComponent(</span><br><span class="line">    UserContainer,</span><br><span class="line">    [userReducer, createReducer],</span><br><span class="line">    [userSaga, createSaga]</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>然后在项目的 <code>Router</code> 组件中引用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// route/index.jsx</span></span><br><span class="line">&lt;Route path=<span class="string">"/user"</span> component=&#123;AsyncArticle&#125; /&gt;</span><br><span class="line">&lt;Route path=<span class="string">"/user/:userId"</span> component=&#123;AsyncUserContainer&#125; /&gt;</span><br></pre></td></tr></table></figure>
+<p>根据 React Router v4 的哲学，React Router 中的一切皆为组件，所以不必在一个单独的文件中统一配置所有的路由信息。建议在你最外层的容器组件，比如我的 <code>route/index.jsx</code> 文件中只写入<strong>对应一个单独页面的容器组件</strong>，而页面中的子组件在该容器组件中异步引入并使用。</p>
+<p><del>在 React Router v5 发布之前完成了本文，可喜可贺👏</del></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><blockquote>
+<p><a href="http://serverless-stack.com/chapters/code-splitting-in-create-react-app.html" target="_blank" rel="noopener">Code Splitting in Create React App</a><br><a href="http://2ality.com/2017/01/import-operator.html" target="_blank" rel="noopener">ES proposal: import() – dynamically importing ES modules</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/webpack/" rel="tag"># webpack</a>
+          
+            <a href="/tags/react-router/" rel="tag"># react-router</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/27/push-message-with-socketio/" rel="next" title="利用 socket.io 实现消息实时推送">
+                <i class="fa fa-chevron-left"></i> 利用 socket.io 实现消息实时推送
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/09/boid-path-following/" rel="prev" title="塔防游戏中的敌人如何沿路径前进 (JavaScript 实现)">
+                塔防游戏中的敌人如何沿路径前进 (JavaScript 实现) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="noiron" />
+          <p class="site-author-name" itemprop="name">noiron</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/noiron" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:wukai2048@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/noiron" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      知乎
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景介绍"><span class="nav-number">1.</span> <span class="nav-text">背景介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是代码分割（code-splitting）"><span class="nav-number">2.</span> <span class="nav-text">什么是代码分割（code splitting）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-Router-中如何进行代码分割"><span class="nav-number">3.</span> <span class="nav-text">React Router 中如何进行代码分割</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-bundle-loader-的方案"><span class="nav-number">3.1.</span> <span class="nav-text">使用 bundle-loader 的方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-bundle-loader-方法存在的不足之处"><span class="nav-number">3.2.</span> <span class="nav-text">使用 bundle-loader 方法存在的不足之处</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-import-的新方案"><span class="nav-number">4.</span> <span class="nav-text">使用 import() 的新方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码分割和-React-Router-v4"><span class="nav-number">4.1.</span> <span class="nav-text">代码分割和 React Router v4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个异步组件（Async-Component）"><span class="nav-number">4.2.</span> <span class="nav-text">创建一个异步组件（Async Component）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用异步组件（Async-Component）"><span class="nav-number">4.3.</span> <span class="nav-text">使用异步组件（Async Component）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对于-reducer-和-saga-文件的异步加载"><span class="nav-number">4.4.</span> <span class="nav-text">对于 reducer 和 saga 文件的异步加载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#asyncComponent-方法与-React-Router-v4-的结合使用"><span class="nav-number">5.</span> <span class="nav-text">asyncComponent 方法与 React Router v4 的结合使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#组件、reducer、saga-的异步引入"><span class="nav-number">5.1.</span> <span class="nav-text">组件、reducer、saga 的异步引入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noiron</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

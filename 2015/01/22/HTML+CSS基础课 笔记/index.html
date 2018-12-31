@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="html,css," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="吴锴的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="HTML+CSS基础课笔记本文档是我学习慕课网（imooc）的HTML+CSS基础课程的笔记  课程地址 1. Html介绍1.2 Html和CSS的关系学习web前端开发基础技术需要掌握：HTML，CSS，JavaScript语言。  HTML是网页内容的载体。内容就是网页制作者放在页面上想要让用户浏览的信息。  CSS样式是表现。比如，标题字体、颜色变化，或为标题加入背景图片、边框等。所有这些">
+<meta name="keywords" content="html,css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTML+CSS基础课笔记">
+<meta property="og:url" content="http://noiron.github.io/2015/01/22/HTML+CSS基础课 笔记/index.html">
+<meta property="og:site_name" content="吴锴的博客">
+<meta property="og:description" content="HTML+CSS基础课笔记本文档是我学习慕课网（imooc）的HTML+CSS基础课程的笔记  课程地址 1. Html介绍1.2 Html和CSS的关系学习web前端开发基础技术需要掌握：HTML，CSS，JavaScript语言。  HTML是网页内容的载体。内容就是网页制作者放在页面上想要让用户浏览的信息。  CSS样式是表现。比如，标题字体、颜色变化，或为标题加入背景图片、边框等。所有这些">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.mukewang.com/528970f4000143a405960399.jpg">
+<meta property="og:image" content="http://img.mukewang.com/528c50ea000146a205520264.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52932bbc0001c12206620372.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52d38c41000163e210120455.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52d38f83000160be02920445.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52d3a1610001a42606940398.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52da4f2a000150b714280550.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52e5f7c60001a23f07360267.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52e604590001ae4005270185.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52e6037300015a9905030165.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52e60c020001b7f805000178.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52e618680001a6b204570101.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52e618680001a6b204570101.jpg">
+<meta property="og:image" content="http://img.mukewang.com/52fde5c30001b0fe03030117.jpg">
+<meta property="og:updated_time" content="2018-12-31T14:15:52.762Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTML+CSS基础课笔记">
+<meta name="twitter:description" content="HTML+CSS基础课笔记本文档是我学习慕课网（imooc）的HTML+CSS基础课程的笔记  课程地址 1. Html介绍1.2 Html和CSS的关系学习web前端开发基础技术需要掌握：HTML，CSS，JavaScript语言。  HTML是网页内容的载体。内容就是网页制作者放在页面上想要让用户浏览的信息。  CSS样式是表现。比如，标题字体、颜色变化，或为标题加入背景图片、边框等。所有这些">
+<meta name="twitter:image" content="http://img.mukewang.com/528970f4000143a405960399.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://noiron.github.io/2015/01/22/HTML+CSS基础课 笔记/"/>
+
+
+
+
+
+  <title>HTML+CSS基础课笔记 | 吴锴的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111511044-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吴锴的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life? Don't talk to me about life!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-demo">
+          <a href="/demo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            个人项目
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2015/01/22/HTML+CSS基础课 笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="noiron">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吴锴的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HTML+CSS基础课笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-22T00:00:00+08:00">
+                2015-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="HTML-CSS基础课笔记"><a href="#HTML-CSS基础课笔记" class="headerlink" title="HTML+CSS基础课笔记"></a>HTML+CSS基础课笔记</h1><p>本文档是我学习慕课网（imooc）的HTML+CSS基础课程的笔记  <a href="http://www.imooc.com/learn/9" target="_blank" rel="noopener">课程地址</a></p>
+<h1 id="1-Html介绍"><a href="#1-Html介绍" class="headerlink" title="1. Html介绍"></a>1. Html介绍</h1><h2 id="1-2-Html和CSS的关系"><a href="#1-2-Html和CSS的关系" class="headerlink" title="1.2 Html和CSS的关系"></a>1.2 Html和CSS的关系</h2><p>学习web前端开发基础技术需要掌握：HTML，CSS，JavaScript语言。</p>
+<ol>
+<li><p><strong>HTML是网页内容的载体。</strong>内容就是网页制作者放在页面上想要让用户浏览的信息。</p>
+</li>
+<li><p><strong>CSS样式是表现。</strong>比如，标题字体、颜色变化，或为标题加入背景图片、边框等。所有这些用来改变内容外观的东西成为表现。</p>
+</li>
+<li><p><strong>JavaScript是用来实现网页上的特效效果。</strong>可以这么理解，有动画的，有交互的一般都是用JavaScript来实现的。</p>
+</li>
+</ol>
+<h2 id="1-3-认识html标签"><a href="#1-3-认识html标签" class="headerlink" title="1.3 认识html标签"></a>1.3 认识html标签</h2><p>可以这么说，网页中每一个内容在浏览器中的显示，都要存放到各种标签中。</p>
+<a id="more"></a>
+<h2 id="1-4-标签的语法"><a href="#1-4-标签的语法" class="headerlink" title="1.4 标签的语法"></a>1.4 标签的语法</h2><ol>
+<li><p><strong>标签</strong>由英文尖括号&lt;&gt;括起来，如&lt;html>就是一个标签。</p>
+</li>
+<li><p>html中的标签一般都是成对出现的，分<strong>开始标签</strong>和<strong>结束标签</strong>。结束标签比开始标签多了一个/</p>
+</li>
+<li><p>标签与标签之间是可以嵌套的。</p>
+</li>
+<li><p>HTML标签不区分大小写，但建议小写，因为大部分程序员都以小写为准。</p>
+</li>
+</ol>
+<h2 id="1-5-认识html文件基本结构"><a href="#1-5-认识html文件基本结构" class="headerlink" title="1.5 认识html文件基本结构"></a>1.5 认识html文件基本结构</h2><p>一个HTML文件是有自己固定的结构的。</p>
+<pre><code>&lt;html&gt;
+    &lt;head&gt;...&lt;/head&gt;
+    &lt;body&gt;...&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><ol>
+<li><p>&lt;html&gt;&lt;/html&gt;称为根标签，所有的网页标签都在&lt;html&gt;&amp;lt/html&gt;中。</p>
+</li>
+<li><p>&lt;head>标签用于定义文档的头部，它是所有头部元素的容器。</p>
+</li>
+<li><p>在&lt;body&gt;和&lt;/body&gt;标签之间的内容是网页的主要内容，如&lt;h1&gt;、&lt;p&gt;、&lt;a&gt;、&lt;img&gt;等网页内容标签，在这里的标签中的内容会在浏览器中显示出来。</p>
+</li>
+</ol>
+<h2 id="1-6-认识head标签"><a href="#1-6-认识head标签" class="headerlink" title="1.6 认识head标签"></a>1.6 认识head标签</h2><p>文档的头部描述了文档的各种属性和信息，包括文档的标题等。绝大多数文档头部包含的数据都不会真正作为内容显示给读者。</p>
+<p>下面这些标签可用在head部分：</p>
+<pre><code>&lt;head&gt;
+    &lt;tite&gt;...&lt;/title&gt;
+    &lt;meta&gt;
+    &lt;link&gt;
+    &lt;style&gt;...&lt;/style&gt;
+    &lt;script&gt;...&lt;/script&gt;
+&lt;/head&gt;
+</code></pre><p>&lt;title&gt; 标签：在&lt;title&gt; 和 &lt;/title&gt; 标签之间的文字内容是网页的标题信息，他会出现在浏览器的标题栏中。</p>
+<h2 id="1-7-了解HTML的代码注释"><a href="#1-7-了解HTML的代码注释" class="headerlink" title="1.7 了解HTML的代码注释"></a>1.7 了解HTML的代码注释</h2><p>注释语法：</p>
+<pre><code>&lt;!--注释文字--&gt;
+</code></pre><h1 id="2-认识标签（第一部分）"><a href="#2-认识标签（第一部分）" class="headerlink" title="2. 认识标签（第一部分）"></a>2. 认识标签（第一部分）</h1><h2 id="2-1-语义化，让你的网页更好的被搜索引擎理解"><a href="#2-1-语义化，让你的网页更好的被搜索引擎理解" class="headerlink" title="2.1 语义化，让你的网页更好的被搜索引擎理解"></a>2.1 语义化，让你的网页更好的被搜索引擎理解</h2><p>学习html标签的过程中，主要注意两个方面的学习：标签的用途、标签在浏览器中的默认样式。</p>
+<p><strong>标签的用途</strong>：什么是<strong>语义化</strong>，通俗地说：明白每个标签的用途（在什么情况下我可以使用这个标签才合理）。</p>
+<p>语义化的好处：</p>
+<ol>
+<li><p>更容易被搜索引擎收录。</p>
+</li>
+<li><p>更容易让屏幕阅读器读出网页内容。</p>
+</li>
+</ol>
+<h2 id="2-2-标签，网页上显示的内容放在这里"><a href="#2-2-标签，网页上显示的内容放在这里" class="headerlink" title="2.2 标签，网页上显示的内容放在这里"></a>2.2 <body>标签，网页上显示的内容放在这里</body></h2><p>在网页上要展示出来的页面内容一定要放在body标签中。</p>
+<h2 id="2-3-开始学习-lt-p-gt-标签，添加段落"><a href="#2-3-开始学习-lt-p-gt-标签，添加段落" class="headerlink" title="2.3 开始学习&lt;p&gt;标签，添加段落"></a>2.3 开始学习&lt;p&gt;标签，添加段落</h2><p>语法：</p>
+<pre><code>&lt;p&gt;段落文本&lt;/p&gt;
+</code></pre><p>注意一段文字一个&lt;p&gt;标签，如有三个段落，要把三个段落分别放到3个&lt;p&gt;标签中。</p>
+<p>&lt;p&gt;标签默认在段前段后都会有空白，可以用css样式来删除或改变它。</p>
+<h2 id="2-4-了解-lt-hx-gt-标签，为你的网页添加标题"><a href="#2-4-了解-lt-hx-gt-标签，为你的网页添加标题" class="headerlink" title="2.4 了解&lt;hx&gt;标签，为你的网页添加标题"></a>2.4 了解&lt;hx&gt;标签，为你的网页添加标题</h2><p>标题标签一共有6个，h1、h2、h3、h4、h5、h6分别为一级标题、二级标题……六级标题，并且依据重要性递减。&lt;h1&gt;是最高的等级。</p>
+<p>语法：</p>
+<pre><code>&lt;hx&gt;标题文本&lt;/hx&gt; (x为1-6)
+</code></pre><p>文章的标题及网页上的各个<strong>栏目的标题</strong>都可以使用标题标签。</p>
+<p>注意：因为 h1 标签在网页中比较重要，所以一般 h1 标签被用在网站名称上。</p>
+<p>**h1-h6标签的默认样式：</p>
+<p>标签代码：</p>
+<pre><code>&lt;body&gt;
+    &lt;h1&gt;一级标题&lt;/h1&gt;
+    &lt;h2&gt;二级标题&lt;/h2&gt;
+    &lt;h3&gt;三级标题&lt;/h3&gt;
+    &lt;h4&gt;四级标题&lt;/h4&gt;
+    &lt;h5&gt;五级标题&lt;/h5&gt;
+    &lt;h6&gt;六级标题&lt;/h6&gt;
+&lt;/body&gt;
+</code></pre><p>在浏览器中显示的样式为：<br><img src="http://img.mukewang.com/528970f4000143a405960399.jpg" alt=""></p>
+<body><br>    <h1>一级标题</h1><br>    <h2>二级标题</h2><br>    <h3>三级标题</h3><br>    <h4>四级标题</h4><br>    <h5>五级标题</h5><br>    <h6>六级标题</h6><br></body>
+
+
+<h2 id="2-5-加入强调语气，使用-lt-strong-gt-和-lt-em-gt-标签"><a href="#2-5-加入强调语气，使用-lt-strong-gt-和-lt-em-gt-标签" class="headerlink" title="2.5 加入强调语气，使用&lt;strong&gt;和&lt;em&gt;标签"></a>2.5 加入强调语气，使用&lt;strong&gt;和&lt;em&gt;标签</h2><p>要在一段话中特别强调某几个文字，这时候就可以用到&lt;em&gt;或&lt;strong&gt;标签。</p>
+<p>两者在强调的语气上有区别：&lt;em&gt;表示强调，&lt;strong&gt;表示更强烈的强调。</p>
+<p>在浏览器中&lt;em&gt;默认用<em>斜体</em>表示，&lt;strong&gt;用<strong>粗体</strong>表示。</p>
+<p>语法：</p>
+<pre><code>&lt;em&gt;需要强调的文本&lt;/em&gt;
+&lt;strong&gt;需要强调的文本&lt;/strong&gt;
+</code></pre><h2 id="2-6-使用-lt-span-gt-标签为文字设置单独样式"><a href="#2-6-使用-lt-span-gt-标签为文字设置单独样式" class="headerlink" title="2.6 使用&lt;span&gt;标签为文字设置单独样式"></a>2.6 使用&lt;span&gt;标签为文字设置单独样式</h2><p>&lt;span&gt;标签是没有语义的，它的作用就是为了设置单独的样式。</p>
+<p>语法：</p>
+<pre><code>&lt;span&gt;文本&lt;/span&gt;
+</code></pre><h2 id="2-7-lt-q-gt-标签，短文本引用"><a href="#2-7-lt-q-gt-标签，短文本引用" class="headerlink" title="2.7 &lt;q&gt;标签，短文本引用"></a>2.7 &lt;q&gt;标签，短文本引用</h2><p>用&lt;q&gt;标签在html中加一段引用。它的默认样式是<strong>双引号</strong>，其语义为：引用别人的话。</p>
+<p>语法：</p>
+<pre><code>&lt;q&gt;引用文本&lt;/q&gt;
+</code></pre><h2 id="2-8-lt-blockquote-gt-标签，长文本引用"><a href="#2-8-lt-blockquote-gt-标签，长文本引用" class="headerlink" title="2.8 &lt;blockquote&gt;标签，长文本引用"></a>2.8 &lt;blockquote&gt;标签，长文本引用</h2><p>&lt;blockquote&gt;的作用也是引用别人的文本，但它是对<strong>长文本</strong>的引用。</p>
+<p>语法：</p>
+<pre><code>&lt;blockquote&gt;引用文本&lt;/blockquote&gt;
+</code></pre><p>如下例子：</p>
+<pre><code>&lt;blockquote&gt;明月出天山，苍茫云海间。长风几万里，吹度玉门关。汉下白登道，胡窥青海湾。由来征战地，不见有人还。 戍客望边色，思归多苦颜。高楼当此夜，叹息未应闲。&lt;/blockquote&gt;
+</code></pre><p>浏览器对&lt;blockquote&gt;标签的解析是缩进样式。</p>
+<p><img src="http://img.mukewang.com/528c50ea000146a205520264.jpg" alt=""></p>
+<h2 id="2-9-使用-lt-br-gt-标签分行显示文本"><a href="#2-9-使用-lt-br-gt-标签分行显示文本" class="headerlink" title="2.9 使用&lt;br&gt;标签分行显示文本"></a>2.9 使用&lt;br&gt;标签分行显示文本</h2><p>在需要加回车换行的地方加入&lt;br/&gt;，它的作用相当于word文档中的回车。</p>
+<p>语法：</p>
+<pre><code>xhtml1.0写法：
+&lt;br/&gt;
+
+html4.01写法：
+&lt;br&gt;
+</code></pre><p><strong>注意</strong>：现在一般使用xhtml1.0版本的写法，这种版本比较规范。</p>
+<p>&lt;br/&gt;是一个空标签，没有HTML内容的标签就是空标签，空标签只需要写一个开始标签，这样的标签有&lt;br/&gt;、&lt;hr/&gt;和&lt;img/&gt;。</p>
+<p>在html中是忽略<strong>回车</strong>和<strong>空格</strong>的，输入再多空格和回车也是显示不出来的。</p>
+<h2 id="2-10-为你的网页中添加一些空格"><a href="#2-10-为你的网页中添加一些空格" class="headerlink" title="2.10 为你的网页中添加一些空格"></a>2.10 为你的网页中添加一些空格</h2><p>要想在html中输入空格，必须写入</p>
+<pre><code>&amp;nbsp;
+</code></pre><h2 id="2-11-认识-lt-hr-gt-标签，添加水平横线"><a href="#2-11-认识-lt-hr-gt-标签，添加水平横线" class="headerlink" title="2.11 认识&lt;hr&gt;标签，添加水平横线"></a>2.11 认识&lt;hr&gt;标签，添加水平横线</h2><p>在信息展示是，有时会需要加一些用于分隔的横线，这样会使文章看起来整齐些。</p>
+<p><img src="http://img.mukewang.com/52932bbc0001c12206620372.jpg" alt=""></p>
+<p>语法：</p>
+<p>html4.01版本  &lt;hr&gt;</p>
+<p>xhtml1.0版本  &lt;hr /&gt;</p>
+<p>注意，现在一般使用 xhtml1.0 的版本（其它标签也是），这种版本比较规范。</p>
+<h2 id="2-12-lt-address-gt-标签，为网页加入地址信息"><a href="#2-12-lt-address-gt-标签，为网页加入地址信息" class="headerlink" title="2.12 &lt;address&gt;标签，为网页加入地址信息"></a>2.12 &lt;address&gt;标签，为网页加入地址信息</h2><p>一般网页中会有一些地址信息需要在网页中展示出来，这些地址信息如公司的地址就可以&lt;address&gt;标签。</p>
+<p>语法：</p>
+<pre><code>&lt;address&gt;地址信息&lt;/address&gt;
+</code></pre><p>在浏览器上显示的样式为斜体，可使用css样式来修改。</p>
+<h2 id="2-13-想加入一行代码吗？使用-lt-code-gt-标签"><a href="#2-13-想加入一行代码吗？使用-lt-code-gt-标签" class="headerlink" title="2.13 想加入一行代码吗？使用&lt;code&gt;标签"></a>2.13 想加入一行代码吗？使用&lt;code&gt;标签</h2><p>当代码为一行时，就可以使用&lt;code&gt;标签了。</p>
+<pre><code>&lt;code&gt;var i = i + 300;&lt;/code&gt;
+</code></pre><p><code>var i = i + 300;</code></p>
+<p>如果是多行代码，可以使用&lt;pre&gt;标签。</p>
+<h2 id="2-14-使用-lt-pre-gt-标签为你的网页加入大段代码"><a href="#2-14-使用-lt-pre-gt-标签为你的网页加入大段代码" class="headerlink" title="2.14 使用&lt;pre&gt;标签为你的网页加入大段代码"></a>2.14 使用&lt;pre&gt;标签为你的网页加入大段代码</h2><p>语法：</p>
+<pre><code>&lt;pre&gt;语言代码段&lt;/pre&gt;
+</code></pre><p>被包围在pre元素中的文本通常会保留空格和换行符。</p>
+<p>如下代码：</p>
+<pre><code>&lt;pre&gt;
+    var message=&quot;欢迎&quot;;
+    for(var i=1;i&lt;=10;i++)
+    {
+        alert(message);
+    }
+&lt;/pre&gt;
+</code></pre><p>&lt;pre&gt; 标签不只是为显示计算机的源代码时用的，在你需要在网页中预显示格式时都可以使用它，只是&lt;pre&gt;标签的一个常见应用就是用来展示计算机的源代码。</p>
+<h1 id="第3章-认识标签（第二部分）"><a href="#第3章-认识标签（第二部分）" class="headerlink" title="第3章 认识标签（第二部分）"></a>第3章 认识标签（第二部分）</h1><h2 id="3-1-使用ul，添加新闻信息列表"><a href="#3-1-使用ul，添加新闻信息列表" class="headerlink" title="3.1 使用ul，添加新闻信息列表"></a>3.1 使用ul，添加新闻信息列表</h2><p>在浏览网页时，你会发现网页上有很多信息的列表，如新闻列表、图片列表。</p>
+<p>这些列表可使用ul-li标签来完成。ul-li是<strong>没有前后顺序</strong>的信息列表。</p>
+<p>语法：</p>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;信息&lt;/li&gt;
+    &lt;li&gt;信息&lt;/li&gt;
+    ......
+&lt;/ul&gt;
+</code></pre><p>举例：</p>
+<pre><code>&lt;ul&gt;
+  &lt;li&gt;精彩少年&lt;/li&gt;
+  &lt;li&gt;美丽突然出现&lt;/li&gt;
+  &lt;li&gt;触动心灵的旋律&lt;/li&gt;
+&lt;/ul&gt;    
+</code></pre><p>ul-li在网页中显示的默认样式一般为：每项li前都自带一个圆点。</p>
+<ul><br>  <li>精彩少年</li><br>  <li>美丽突然出现</li><br>  <li>触动心灵的旋律</li><br></ul>
+
+
+<h2 id="3-2-使用ol，添加图书销售排行榜"><a href="#3-2-使用ol，添加图书销售排行榜" class="headerlink" title="3.2 使用ol，添加图书销售排行榜"></a>3.2 使用ol，添加图书销售排行榜</h2><p>想在网页中展示有前后顺序的信息列表，可使用&lt;ol&gt;标签来制作**有序列表来展示。</p>
+<p>语法：</p>
+<pre><code>&lt;ol&gt;
+    &lt;li&gt;信息&lt;/li&gt;
+    &lt;li&gt;信息&lt;/li&gt;
+    ......
+&lt;/ol&gt;
+</code></pre><p>举例：</p>
+<pre><code>&lt;ol&gt;
+    &lt;li&gt;前端开发面试心法 &lt;/li&gt;
+    &lt;li&gt;零基础学习html&lt;/li&gt;
+    &lt;li&gt;JavaScript全攻略&lt;/li&gt;
+&lt;/ol&gt;
+</code></pre><p>&lt;ol&gt;在网页中显示的默认样式一般为：每项&lt;li&gt;前都自带一个序号，序号默认从1开始。</p>
+<ol><br>    <li>前端开发面试心法 </li><br>    <li>零基础学习html</li><br>    <li>JavaScript全攻略</li><br></ol>
+
+
+<h2 id="3-3-认识div在排版中的作用"><a href="#3-3-认识div在排版中的作用" class="headerlink" title="3.3 认识div在排版中的作用"></a>3.3 认识div在排版中的作用</h2><p>在网页制作过程中，可以把一些独立的逻辑部分划分出来，放在一个&lt;div&gt;标签中，这个&lt;div&gt;标签的作用就相当于一个容器。</p>
+<p>语法：</p>
+<pre><code>&lt;div&gt;...&lt;/div&gt;
+</code></pre><p>确定逻辑部分：</p>
+<p>什么是逻辑部分？它是页面上相互关联的一组元素。如网页中的独立的<strong>栏目板块</strong>，就是一个典型的逻辑部分。如下图，用红框框出的部分就是一个逻辑部分。</p>
+<p><img src="http://img.mukewang.com/52d38c41000163e210120455.jpg" alt=""></p>
+<h2 id="3-4-给div命名，使逻辑更加清晰"><a href="#3-4-给div命名，使逻辑更加清晰" class="headerlink" title="3.4 给div命名，使逻辑更加清晰"></a>3.4 给div命名，使逻辑更加清晰</h2><p>为了使逻辑更加清晰，可以为用&lt;div&gt;标签划分出的独立逻辑部分设置一个名称，用id属性来为&lt;div&gt;提供唯一的名称。</p>
+<p>语法：</p>
+<pre><code>&lt;div id=&quot;板块名称&quot;&gt;...&lt;/div&gt;
+</code></pre><h2 id="3-5-table标签——认识网页上的表格"><a href="#3-5-table标签——认识网页上的表格" class="headerlink" title="3.5 table标签——认识网页上的表格"></a>3.5 table标签——认识网页上的表格</h2><p>创建表格的四个元素：table、tbody、tr、th、td</p>
+<ol>
+<li><p>&lt;table&gt;…&lt;/table&gt;：整个表格以&lt;table&gt;标记开始、&lt;/table&gt;标记结束</p>
+</li>
+<li><p>&lt;tbody&gt;…&lt;/tbody&gt;：当表格内容非常多时，表格会下载一点显示一点，但如果加上&lt;tbody&gt;标签后，这个表格就会等所有内容下载完后才显示。</p>
+</li>
+<li><p>&lt;tr&gt;…&lt;/tr&gt;：表格的一行，有几对tr表格就有几行。</p>
+</li>
+<li><p>&lt;td&gt;…&lt;/td&gt;：表格的一个单元格，一行中包含几对td，说明一行中有几列。</p>
+</li>
+<li><p>&lt;th&gt;…&lt;/th&gt;：表格的头部的一个单元格，表格表头。</p>
+</li>
+<li><p>表格中列的个数，取决于一行中数据单元格的个数。</p>
+</li>
+</ol>
+<p><img src="http://img.mukewang.com/52d38f83000160be02920445.jpg" alt=""></p>
+<table><br>  <tr><br>    <th>产品名称</th><br>    <th>品牌</th><br>    <th>库存量（个）</th><br>    <th>入库时间</th><br>  </tr><br>  <tr><br>    <td>耳机</td><br>    <td>联想</td><br>    <td>500</td><br>    <td>2013-1-2</td><br>  </tr><br>  <tr><br>    <td>U盘</td><br>    <td>金士顿</td><br>    <td>120</td><br>    <td>2013-8-10</td><br>  </tr><br>  <tr><br>    <td>U盘</td><br>    <td>爱国者</td><br>    <td>133</td><br>    <td>2013-3-25</td><br>  </tr><br></table>
+
+
+<h2 id="3-6-用css样式，为表格加入边框"><a href="#3-6-用css样式，为表格加入边框" class="headerlink" title="3.6 用css样式，为表格加入边框"></a>3.6 用css样式，为表格加入边框</h2><p>Table表格再没有添加css样式之前，是没有边框的。</p>
+<p>下面的代码用css样式代码，为th、td单元格添加粗细为一个像素的黑色边框。</p>
+<pre><code>&lt;style type=&quot;text/css&quot;&gt;
+table tr td, th {border:1px solid #000;}
+&lt;style&gt;
+</code></pre><style type="text/css">
+table tr td,th{border:1px solid #000;}
+</style>
+
+<table summary=""><br>  <tr><br>    <th>班级</th><br>    <th>学生数</th><br>    <th>平均成绩</th><br>  </tr><br>  <tr><br>    <td>一班</td><br>    <td>30</td><br>    <td>89</td><br>  </tr><br>  <tr><br>    <td>二班</td><br>    <td>35</td><br>    <td>85</td><br>  </tr><br>  <tr><br>    <td>三班</td><br>    <td>32</td><br>    <td>80</td><br>  </tr><br></table>
+
+
+<h2 id="3-7-caption标签，为表格添加标题和摘要"><a href="#3-7-caption标签，为表格添加标题和摘要" class="headerlink" title="3.7 caption标签，为表格添加标题和摘要"></a>3.7 caption标签，为表格添加标题和摘要</h2><p><img src="http://img.mukewang.com/52d3a1610001a42606940398.jpg" alt=""></p>
+&lt;table summary=”这个表格描述怡安街小学三年级数学平均成绩表，1到3班，3个班级的数学平均成绩。”<br><br>  <caption>怡安街小学三年级数学平均成绩表</caption><br>  <tr><br>    <th>班级</th><br>    <th>学生数</th><br>    <th>平均成绩</th><br>  </tr><br>  <tr><br>    <td>一班</td><br>    <td>30</td><br>    <td>89</td><br>  </tr><br>  <tr><br>    <td>二班</td><br>    <td>35</td><br>    <td>85</td><br>  </tr><br>  <tr><br>    <td>三班</td><br>    <td>32</td><br>    <td>80</td><br>  </tr><br>
+
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>摘要的内容是不会在浏览器中显示出来的。它的作用是增加表格的可读性（语义化），使搜索引擎更好的读懂表格内容。</p>
+<pre><code>&lt;table summary=&quot;表格简介文本&quot;&gt;
+</code></pre><h3 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h3><p>用以描述表格内容，位置：表格上方。</p>
+<pre><code>&lt;table&gt;
+  &lt;caption&gt;标题文本&lt;/caption&gt;
+  &lt;tr&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      ...
+  &lt;tr&gt;
+&lt;/table&gt;
+</code></pre><h1 id="第4章-认识标签（第三部分）"><a href="#第4章-认识标签（第三部分）" class="headerlink" title="第4章 认识标签（第三部分）"></a>第4章 认识标签（第三部分）</h1><h2 id="4-1-使用-lt-a-gt-标签，链接到别一个页面"><a href="#4-1-使用-lt-a-gt-标签，链接到别一个页面" class="headerlink" title="4.1 使用&lt;a&gt;标签，链接到别一个页面"></a>4.1 使用&lt;a&gt;标签，链接到别一个页面</h2><p>使用&lt;a&gt;标签可实现超链接。</p>
+<p>语法：</p>
+<pre><code>&lt;a href=&quot;目标网址&quot; title=&quot;鼠标哦滑过显示的文本&quot;&gt;链接显示的文本&lt;/a&gt;
+</code></pre><p>例如：</p>
+<pre><code>&lt;a href=&quot;http://www.imooc.com&quot; title=&quot;点击进入慕课网&quot;&gt;click here!&lt;/a&gt;
+</code></pre><p><a href="http://www.imooc.com" title="点击进入慕课网" target="_blank" rel="noopener">click here!</a></p>
+<h2 id="4-2-在新建浏览器窗口中打开链接"><a href="#4-2-在新建浏览器窗口中打开链接" class="headerlink" title="4.2 在新建浏览器窗口中打开链接"></a>4.2 在新建浏览器窗口中打开链接</h2><p>&lt;a&gt;标签在默认情况下，链接的网页在当前浏览器窗口中打开，有时需要在新窗口中打开。</p>
+<pre><code>&lt;a href=&quot;目标网址&quot; target=&quot;_blank&quot;&gt;click here!&lt;/a&gt;
+</code></pre><p><a href="目标网址" target="_blank">click here!</a></p>
+<h2 id="4-3-使用mailto在网页中链接Email地址"><a href="#4-3-使用mailto在网页中链接Email地址" class="headerlink" title="4.3 使用mailto在网页中链接Email地址"></a>4.3 使用mailto在网页中链接Email地址</h2><p>&lt;a&gt;标签还有个作用是可以链接Email地址，使用mailto能让访问者便捷向网站管理者发送电子邮件。</p>
+<p><img src="http://img.mukewang.com/52da4f2a000150b714280550.jpg" alt=""></p>
+<pre><code>&lt;a href=&quot;mailto:yy@imooc.com ? cc=xiaoming@imooc.com &amp; bcc=xiaoyu@imooc.com &amp; subject=主题 &amp; body=邮件内容&quot;&gt;发送&lt;/a&gt;
+</code></pre><p><strong>注意</strong>：如果mailto后面同时有多个参数的话，第一个参数必须以“?”开通，后面的参数都以“&amp;”分隔。</p>
+<p><a href="mailto:yy@imooc.com ? cc=xiaoming@imooc.com & bcc=xiaoyu@imooc.com & subject=主题 & body=邮件内容" target="_blank" rel="noopener">发送</a></p>
+<h2 id="4-4-认识-lt-img-gt-标签，为网页插入图片"><a href="#4-4-认识-lt-img-gt-标签，为网页插入图片" class="headerlink" title="4.4 认识&lt;img&gt;标签，为网页插入图片"></a>4.4 认识&lt;img&gt;标签，为网页插入图片</h2><p>语法：</p>
+<pre><code>&lt;img src=&quot;图片地址&quot; alt=&quot;下载失败时的替换文本&quot; title=&quot;提示文本&quot;&gt;
+</code></pre><p>举例：</p>
+<pre><code>&lt;img src = &quot;myimage.gif&quot; alt = &quot;My Image&quot; title = &quot;My Image&quot; /&gt;
+</code></pre><ol>
+<li><p>src:标识图像的位置</p>
+</li>
+<li><p>alt:当图像不可见时（下载不成功时），可看到该属性指定的文本</p>
+</li>
+<li><p>title:提供在图像可见时对图像的描述（鼠标滑过图片时显示的文本）</p>
+</li>
+<li><p>图像可以是GIF、PNG、JPEG格式</p>
+</li>
+</ol>
+<h1 id="第5章-与浏览者交互，表单标签"><a href="#第5章-与浏览者交互，表单标签" class="headerlink" title="第5章 与浏览者交互，表单标签"></a>第5章 与浏览者交互，表单标签</h1><h2 id="5-1-使用表单标签，与用户交互"><a href="#5-1-使用表单标签，与用户交互" class="headerlink" title="5.1 使用表单标签，与用户交互"></a>5.1 使用表单标签，与用户交互</h2><p>网站使用HTML表单（form）与用户进行交互。</p>
+<p><strong>表单</strong>是可以把浏览者输入的数据传送到服务器端，这样服务器端程序就可以处理表单传过来的数据。</p>
+<p>语法：</p>
+<pre><code>&lt;form method=&quot;传送方式&quot; action=&quot;服务器文件&quot;&gt;&lt;/form&gt;
+</code></pre><p>讲解：</p>
+<ol>
+<li><p>&lt;form&gt;标签成对出现</p>
+</li>
+<li><p>action:浏览者输入的数据被传送到的地方，比如一个PHP页面（save.php）</p>
+</li>
+<li><p>method:数据传送的方式（get/post）</p>
+ <pre>
+
+     <form method="post" action="save.php">
+         <label for="username">用户名：</label>
+         <input type="text" name="username">
+         <label for="pass">密码：</label>
+         <input type="password" name="pass">
+     </form>
+
+ </pre>
+
+</li>
+</ol>
+<p>所有表单控件都必须放在&lt;form&gt;&lt;/form&gt;</p>
+<h2 id="5-2-文本输入框、密码输入框"><a href="#5-2-文本输入框、密码输入框" class="headerlink" title="5.2 文本输入框、密码输入框"></a>5.2 文本输入框、密码输入框</h2><p>用户要在表单中键入字母、数字等内容时，就会用到<strong>文本输入框</strong>。文本框也可以转化为密码输入框。</p>
+<p>语法：</p>
+<pre><code>&lt;form&gt;
+    &lt;input type=&quot;text/password&quot; name=&quot;名称&quot; value=&quot;文本&quot; /&gt;
+&lt;/form&gt;
+</code></pre><ol>
+<li><p>type     type=”text”–&gt;文本输入框    type=”password”–&gt;密码输入框</p>
+</li>
+<li><p>name：为文本框命名，以备后台程序ASP、PHP使用</p>
+</li>
+<li><p>value：设置默认值</p>
+</li>
+</ol>
+<p>举例：</p>
+<pre><code>&lt;form&gt;
+    姓名：
+    &lt;input type=&quot;text&quot; name=&quot;myName&quot;
+    &lt;br/&gt;
+    密码：
+    &lt;input type=&quot;password&quot; name=&quot;pass&quot;&gt;
+&lt;/form&gt;
+</code></pre><p>显示为：</p>
+<form><br>    姓名：<br>    &lt;input type=”text” name=”myName”<br>    <br><br>    密码：<br>    <input type="password" name="pass"><br></form>
+
+
+<h2 id="5-3-文本域，支持多行文本输入"><a href="#5-3-文本域，支持多行文本输入" class="headerlink" title="5.3 文本域，支持多行文本输入"></a>5.3 文本域，支持多行文本输入</h2><p>当用户需要在表单中输入大段文字时，需要用到文本输入域。</p>
+<p>语法：</p>
+<pre><code>&lt;textarea rows=&quot;行数&quot; cols=&quot;列数&quot;&gt;文本&lt;/textarea&gt;
+</code></pre><ol>
+<li><p>&lt;textarea&gt;标签成对出现</p>
+</li>
+<li><p>在标签之间可以输入默认值</p>
+</li>
+</ol>
+<p>举例：</p>
+<pre><code>&lt;form method=&quot;post&quot; action=&quot;save.php&quot;&gt;
+        &lt;label&gt;联系我们&lt;/label&gt;
+        &lt;textarea cols=&quot;50&quot; rows=&quot;10&quot;&gt;
+        在这里输入内容...&lt;/textarea&gt;
+&lt;/form&gt;
+</code></pre><form method="post" action="save.php"><br>        <label>联系我们</label><br>        <textarea cols="50" rows="10"><br>在这里输入内容…</textarea><br></form>
+
+
+<h2 id="5-4-使用单选框、复选框，让用户选择"><a href="#5-4-使用单选框、复选框，让用户选择" class="headerlink" title="5.4 使用单选框、复选框，让用户选择"></a>5.4 使用单选框、复选框，让用户选择</h2><p>语法：</p>
+<pre><code>&lt;input type=&quot;radio/checkbox&quot; value=&quot;值&quot; 
+name=&quot;名称&quot; checked=&quot;checked&quot;/&gt;
+</code></pre><ol>
+<li><p>type：type=”radio”–&gt;单选框    type=”checkbox”–&gt;复选框</p>
+</li>
+<li><p>value：提交数据到服务器的值（后台程序PHP使用）</p>
+</li>
+<li><p>name：为控件命名，以备后台程序ASP、PHP使用</p>
+</li>
+<li><p>checked：当设置checked=”checked”时，该选项被默认选中</p>
+</li>
+</ol>
+<p><img src="http://img.mukewang.com/52e5f7c60001a23f07360267.jpg" alt=""></p>
+<form name="iForm" method="post" action="save.php"><br>    你是否喜欢旅游？<br><br>    <input type="radio" name="radiolove" value="喜欢" checked="checked"> 喜欢<br>    <input type="radio" name="radiolove" value="不喜欢"> 不喜欢<br>    <input type="radio" name="radiolove" value="无所谓"> 无所谓<br>    <br><br><br>    你对哪些运动感兴趣？<br><br>    <input type="checkbox" name="checkbox1" value="跑步"> 跑步<br>    <input type="checkbox" name="checkbox2" value="打球" checked="checked"> 跑步<br>    <input type="checkbox" name="checkbox3" value="登山" checked="checked"> 登山<br>    <input type="checkbox" name="checkbox2" value="健身"> 健身<br></form>
+
+<p>同一组的单选按钮，name 取值一定要一致，比如上面例子为同一个名称“radioLove”，这样同一组的单选按钮才可以起到单选的作用。</p>
+<h2 id="5-5-使用下拉列表框，节省空间"><a href="#5-5-使用下拉列表框，节省空间" class="headerlink" title="5.5 使用下拉列表框，节省空间"></a>5.5 使用下拉列表框，节省空间</h2><p><img src="http://img.mukewang.com/52e604590001ae4005270185.jpg" alt=""></p>
+<form name="iForm"><br>    <label>爱好</label><br>    <select><br>        <option value="读书">读书</option><br>        <option value="运动">运动</option><br>        <option value="音乐">音乐</option><br>        <option value="旅游">旅游</option><br>        <option value="购物" selected="selected">购物</option><br>    </select><br></form>
+
+<p>讲解：</p>
+<ul>
+<li><p>value:<br><img src="http://img.mukewang.com/52e6037300015a9905030165.jpg" alt=""></p>
+</li>
+<li><p>设置selected=”selected”属性，则该选项被默认选中</p>
+</li>
+</ul>
+<h2 id="5-6-使用下拉列表框进行多选"><a href="#5-6-使用下拉列表框进行多选" class="headerlink" title="5.6 使用下拉列表框进行多选"></a>5.6 使用下拉列表框进行多选</h2><p>下拉列表也可以进行多选操作，在&lt;select&gt;标签中设置multiple=”multiple”属性，就可以实现多选功能，Windows下按下Ctrl进行多选。</p>
+<p><img src="http://img.mukewang.com/52e60c020001b7f805000178.jpg" alt=""></p>
+<form name="iForm"><br>    <label>爱好：</label><br>    <select multiple="multiple"><br>        <option value="看书">看书</option><br>        <option value="旅游">旅游</option><br>        <option value="运动">运动</option><br>        <option value="购物">购物</option><br>    </select><br></form>
+
+
+<h2 id="5-7-使用提交按钮，提交数据"><a href="#5-7-使用提交按钮，提交数据" class="headerlink" title="5.7 使用提交按钮，提交数据"></a>5.7 使用提交按钮，提交数据</h2><p>在表单中有两种按钮可以使用，分别为：提交按钮、重置。</p>
+<p>当用户需要提交表单信息到服务器时，需要用到<strong>提交按钮</strong>。</p>
+<p>语法：</p>
+<pre><code>&lt;input type=&quot;submit&quot; value=&quot;提交&quot;&gt;
+</code></pre><p>举例：</p>
+<p><img src="http://img.mukewang.com/52e618680001a6b204570101.jpg" alt=""></p>
+<form method="post" action="save.php"><br>    <label for="myName">姓名：</label><br>    <input type="text" value=" " name="myName "><br>    <input type="submit" value="提交" name="submitBtn"><br></form>
+
+
+<h2 id="5-8-使用重置按钮，重置表单信息"><a href="#5-8-使用重置按钮，重置表单信息" class="headerlink" title="5.8 使用重置按钮，重置表单信息"></a>5.8 使用重置按钮，重置表单信息</h2><p>当用户需要重置表单信息到初始时的状态时，可以使用重置按钮使输入框恢复到初始状态。</p>
+<p>语法：</p>
+<pre><code>&lt;input type=&quot;reset&quot; value=&quot;重置&quot;&gt;
+</code></pre><p><img src="http://img.mukewang.com/52e618680001a6b204570101.jpg" alt=""></p>
+<form method="post" action="save.php"><br>    <label for="myName">姓名：</label><br>    <input type="text" value=" " name="myName "><br>    <input type="reset" value="重置" name="submitBtn"><br></form>
+
+
+<h2 id="5-9-form表单中label标签"><a href="#5-9-form表单中label标签" class="headerlink" title="5.9 form表单中label标签"></a>5.9 form表单中label标签</h2><p>label标签不会向用户呈现任何特殊效果，它的作用是为鼠标用户改进了可用性。当用户单击选中该label标签时，浏览器就会自动将焦点转到和标签相关的表单控件上。</p>
+<p>语法：</p>
+<pre><code>&lt;label for=&quot;控件id名称&quot;&gt;
+</code></pre><p>注意：标签的<strong>for属性中的值</strong>应当与相关控件的<strong>id属性值</strong>相同。</p>
+<p>例子：</p>
+<pre><code>&lt;form&gt;
+    &lt;label for=&quot;male&quot;&gt;男&lt;/label&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;sex&quot; id=&quot;male&quot; /&gt;
+    &lt;br /&gt;
+    &lt;label for=&quot;female&quot;&gt;女&lt;/label&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;sex&quot; id=&quot;female&quot; /&gt;
+    &lt;label for=&quot;email&quot;&gt;输入你的邮箱地址&lt;/label&gt;
+    &lt;input type=&quot;email&quot; id=&quot;mail&quot; placeholder=&quot;Enter email&quot;&gt;
+&lt;/form&gt;
+</code></pre><form><br>    <label for="male">男</label><br>    <input type="radio" name="sex" id="male"><br>    <br><br>    <label for="female">女</label><br>    <input type="radio" name="sex" id="female"><br>    <label for="email">输入你的邮箱地址</label><br>    <input type="email" id="email" placeholder="Enter email"><br></form>
+
+
+<h1 id="第6章-开始学习CSS，为网站添加样式"><a href="#第6章-开始学习CSS，为网站添加样式" class="headerlink" title="第6章 开始学习CSS，为网站添加样式"></a>第6章 开始学习CSS，为网站添加样式</h1><h2 id="6-1-认识CSS样式"><a href="#6-1-认识CSS样式" class="headerlink" title="6.1 认识CSS样式"></a>6.1 认识CSS样式</h2><p>CSS全称为“层叠样式表（Cascading Style Sheets）”，它主要是用于定义HTML内容在浏览器内的显示样式，如文字大小、颜色、字体加粗等。</p>
+<p>如：</p>
+<pre><code>p{
+    font-size:12px;
+    color:red;
+    font-weight:bold;
+}
+</code></pre><p>使用CSS样式的一个好处是通过定义一个样式，让网页不同位置的文字有着统一的字体、字号或者颜色等。</p>
+<h2 id="6-2-CSS样式的优势"><a href="#6-2-CSS样式的优势" class="headerlink" title="6.2 CSS样式的优势"></a>6.2 CSS样式的优势</h2><p>可以将三个分开的三个短语的文本颜色设置为红色，而且只需要编写一条css样式语句。</p>
+<p>第一步：把这三个短语用&lt;span&gt;&lt;/span&gt;括起来</p>
+<p>第二步：写入下列代码</p>
+<pre><code>span{
+    color:red;
+}
+</code></pre><h2 id="6-3-CSS代码语法"><a href="#6-3-CSS代码语法" class="headerlink" title="6.3 CSS代码语法"></a>6.3 CSS代码语法</h2><p>css样式由<strong>选择符</strong>和<strong>声明</strong>组成，而<strong>声明</strong>又由<strong>属性</strong>和<strong>值</strong>组成，如下所示：</p>
+<p><img src="http://img.mukewang.com/52fde5c30001b0fe03030117.jpg" alt=""></p>
+<p>选择符：又称选择器，指明网页中要应用样式规则的元素。</p>
+<p>当有多条声明时，中间可以用“;”分隔</p>
+<pre><code>p{font-size:12px;color:red;}
+</code></pre><h2 id="6-4-CSS注释代码"><a href="#6-4-CSS注释代码" class="headerlink" title="6.4 CSS注释代码"></a>6.4 CSS注释代码</h2><p>CSS中的注释语句用/*注释语句*/来标明（HTML中使用<code>&lt;!--注释语句--&gt;</code>)</p>
+<h1 id="第7章-CSS样式基本知识"><a href="#第7章-CSS样式基本知识" class="headerlink" title="第7章 CSS样式基本知识"></a>第7章 CSS样式基本知识</h1><h2 id="7-1-内联式css样式，直接写在现有的HTML标签中"><a href="#7-1-内联式css样式，直接写在现有的HTML标签中" class="headerlink" title="7.1 内联式css样式，直接写在现有的HTML标签中"></a>7.1 内联式css样式，直接写在现有的HTML标签中</h2><p>CSS样式可以写在哪些地方呢？从CSS样式代码插入的形式来看基本可以分为以下3种：内联式、嵌入式和外部式三种。</p>
+<p><strong>内联式</strong></p>
+<p>css样式表就是把css代码直接写在现有的HTML标签中，如下代码：</p>
+<pre><code>&lt;p style=&quot;color:red&quot;&gt;这里文字是红色。&lt;/p&gt;
+</code></pre><p>注意要写在元素的开始标签里。并且css样式代码要写在style=””双引号中。</p>
+<h2 id="7-2-嵌入式css样式，写在当前的文件中"><a href="#7-2-嵌入式css样式，写在当前的文件中" class="headerlink" title="7.2 嵌入式css样式，写在当前的文件中"></a>7.2 嵌入式css样式，写在当前的文件中</h2><p>嵌入式css样式，就是可以把css样式代码写在<code>&lt;style type=&quot;text/css&quot;&gt;&lt;/style&gt;</code>标签之间。</p>
+<pre><code>&lt;style type=&quot;text/css&quot;&gt;
+span{
+color:red;
+}
+&lt;/style&gt;
+</code></pre><h2 id="7-3-外部式css样式，写在单独的一个文件中"><a href="#7-3-外部式css样式，写在单独的一个文件中" class="headerlink" title="7.3 外部式css样式，写在单独的一个文件中"></a>7.3 外部式css样式，写在单独的一个文件中</h2><p>外部式css样式(也可称为外联式)就是把css代码写一个单独的外部文件中，这个css样式文件以“.css”为扩展名，在<code>&lt;head&gt;</code>内（不是在<code>&lt;style&gt;</code>标签内）使用<code>&lt;link&gt;</code>标签将css样式文件链接到HTML文件内，如下面代码：</p>
+<pre><code>&lt;link href=&quot;bass.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
+</code></pre><p>注意：</p>
+<ol>
+<li><p>rel=”stylesheet” type=”text/css”是固定写法不可修改</p>
+</li>
+<li><p><code>&lt;link&gt;</code>标签位置一般写在<code>&lt;head&gt;</code>标签之内</p>
+</li>
+</ol>
+<h2 id="7-4-三种方法的优先级"><a href="#7-4-三种方法的优先级" class="headerlink" title="7.4 三种方法的优先级"></a>7.4 三种方法的优先级</h2><p>三种样式有优先级：内联式&gt;嵌入式&gt;外部式</p>
+<p>嵌入式&gt;外部式有一个前提：嵌入式css样式的位置一定在外部式的后面。</p>
+<p>总结为：就近原则。</p>
+<h1 id="第8章-CSS选择器"><a href="#第8章-CSS选择器" class="headerlink" title="第8章 CSS选择器"></a>第8章 CSS选择器</h1><h2 id="8-1-什么是选择器"><a href="#8-1-什么是选择器" class="headerlink" title="8.1 什么是选择器"></a>8.1 什么是选择器</h2><p>每一条css样式声明（定义）由两部分组成，形式如下：</p>
+<pre><code>选择器{
+    样式;
+}
+</code></pre><p>在{}之前的部分就是“选择器”，“选择器”指明了{}中的“样式”的作用对象，也就是“样式”作用于网页中的哪些元素。如下面的“body”就是选择器。</p>
+<pre><code>body{
+    font-size:12px;
+    color:red;  
+}
+</code></pre><h2 id="8-2-标签选择器"><a href="#8-2-标签选择器" class="headerlink" title="8.2 标签选择器"></a>8.2 标签选择器</h2><p>标签选择器其实就是html代码中的标签。如<code>&lt;html&gt;、&lt;body&gt;、&lt;h1&gt;&lt;p&gt;、&lt;img&gt;</code>。</p>
+<pre><code>p{font-size:12px;line-height:1.6em;}
+</code></pre><p>上面的css样式代码的作用：为p标签设置12px字号，行间距设置1.6em的样式。</p>
+<h2 id="8-3-类选择器"><a href="#8-3-类选择器" class="headerlink" title="8.3 类选择器"></a>8.3 类选择器</h2><p>类选择器在css样式编码中是最常用到的。</p>
+<p>语法：</p>
+<pre><code>.类选择器名称{css样式代码;}
+</code></pre><p>使用方法：</p>
+<p>第一步：使用合适的标签把要修饰的内容标记起来</p>
+<pre><code>&lt;span&gt;胆小如鼠&lt;/span&gt;
+</code></pre><p>第二步：使用class=”类选择器名称”为标签设置一个类</p>
+<pre><code>&lt;span class=&quot;stress&quot;&gt;胆小如鼠&lt;/span&gt;
+</code></pre><p>第三步：设置类选择器css样式</p>
+<pre><code>.stress{color:red;} /*类前面要加入一个英文圆点*/
+</code></pre><h2 id="8-4-ID选择器"><a href="#8-4-ID选择器" class="headerlink" title="8.4 ID选择器"></a>8.4 ID选择器</h2><p>在很多方面，ID选择器都类似于类选择符，但也有一些重要的区别：</p>
+<ol>
+<li><p>为标签设置id=”ID名称”，而不是class=”类名称”。</p>
+</li>
+<li><p>ID选择符的前面是井号（#）号，而不是英文圆点（.）。</p>
+</li>
+</ol>
+<pre>
+    #stress{
+        color:red;
+    }
+
+    <span id="stress">胆小如鼠</span>
+</pre>
+
+<h2 id="8-5-类和ID选择器的区别"><a href="#8-5-类和ID选择器的区别" class="headerlink" title="8.5 类和ID选择器的区别"></a>8.5 类和ID选择器的区别</h2><p>相同点：可以应用于任何元素</p>
+<p>不同点：</p>
+<ol>
+<li><p><strong>ID选择器只能在文档中使用一次</strong>。而类选择器可以使用多次。</p>
+</li>
+<li><p><strong>可以使用类选择器词列表方法为一个元素同时设置多个样式</strong>。</p>
+</li>
+</ol>
+<p>可以为一个元素同时设多个样式，但只可以用类选择器的方法实现，ID选择器是不可以的（不能使用 ID 词列表）</p>
+<pre><code>.stress{
+    color:red;
+}
+.bigsize{
+    font-size:25px;
+}
+&lt;p&gt;到了&lt;span class=&quot;stress bigsize&quot;&gt;三年级&lt;/span&gt;下学期时，我们班上了一节公开课...&lt;/p&gt;
+</code></pre><h2 id="8-6-子选择器"><a href="#8-6-子选择器" class="headerlink" title="8.6 子选择器"></a>8.6 子选择器</h2><p>还有一个比较有用的选择器<strong>子选择器</strong>，即大于符号(&gt;),用于选择指定标签元素的*<em>第一代子元素</em>。</p>
+<pre><code>.food&gt;li{border:1px solid red;}
+
+&lt;ul class=&quot;food&quot;&gt;
+    &lt;li&gt;水果
+        &lt;ul&gt;
+            &lt;li&gt;香蕉&lt;/li&gt;
+            &lt;li&gt;苹果&lt;/li&gt;
+            &lt;li&gt;梨&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;蔬菜
+        &lt;ul&gt;
+            &lt;li&gt;白菜&lt;/li&gt;
+            &lt;li&gt;油菜&lt;/li&gt;
+            &lt;li&gt;卷心菜&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+</code></pre><p>这行代码会使class名为food下的子元素li（水果、蔬菜）加入红色实线边框。</p>
+<h2 id="8-7-包含（后代）选择器"><a href="#8-7-包含（后代）选择器" class="headerlink" title="8.7 包含（后代）选择器"></a>8.7 包含（后代）选择器</h2><p><strong>包含选择器</strong>，即加入空格，用于选择指定标签元素下的后辈元素。</p>
+<pre><code>.first span{color:red;}
+</code></pre><p>请注意这个选择器与子选择器的区别，子选择器（child selector）仅是指它的<strong>直接后代</strong>，或者你可以理解为作用于子元素的第一代后代。而后代选择器是作用于<strong>所有子后代元素</strong>。后代选择器通过空格来进行选择，而子选择器是通过“&gt;”进行选择。</p>
+<h2 id="8-8-通用选择器"><a href="#8-8-通用选择器" class="headerlink" title="8.8 通用选择器"></a>8.8 通用选择器</h2><p>通用选择器是功能最强大的选择器，它使用一个（*）号指定，它的作用是匹配html中所有标签元素，如下使用下面代码使用html中任意标签元素字体颜色全部设置为红色：</p>
+<pre><code>* {color:red;}
+</code></pre><h2 id="8-9-伪类选择符"><a href="#8-9-伪类选择符" class="headerlink" title="8.9 伪类选择符"></a>8.9 伪类选择符</h2><p>为什么叫做伪类选择符，它允许给html不存在的标签（标签的某种状态）设置样式，比如说我们给html中一个标签元素的鼠标滑过的状态来设置字体颜色：</p>
+<pre><code>a:hover{color:red;}
+</code></pre><p>上面一行代码就是为a标签鼠标滑过的状态设置字体颜色变红。</p>
+<h2 id="8-10-分组选择符"><a href="#8-10-分组选择符" class="headerlink" title="8.10 分组选择符"></a>8.10 分组选择符</h2><p>当你想为html中多个标签元素设置同一个样式时，可以使用分组选择符（，），如下代码为h1、span标签同时设置字体颜色为红色：</p>
+<pre><code>h1, span{color:red;}
+</code></pre><p>相当于下面两行代码：</p>
+<pre><code>h1{color:red;}
+span{color:red;}
+</code></pre><h1 id="第9章-CSS的继承、层叠和特殊性"><a href="#第9章-CSS的继承、层叠和特殊性" class="headerlink" title="第9章 CSS的继承、层叠和特殊性"></a>第9章 CSS的继承、层叠和特殊性</h1><h2 id="9-1-继承"><a href="#9-1-继承" class="headerlink" title="9.1 继承"></a>9.1 继承</h2><p>CSS的某些样式是具有继承性的。继承是一种规则，它允许样式不仅应用于某个特定html标签元素，而且应用于其后代。比如下面代码：如某种颜色应用于p标签，这个颜色设置不仅应用p标签，还应用于p标签中的所有子元素文本，这里子元素为span标签。</p>
+<pre><code>p{color:red;}
+
+&lt;p&gt;三年级时，我还是一个&lt;span&gt;胆小如鼠&lt;/span&gt;的小女孩。&lt;/p&gt;
+</code></pre><h2 id="9-2-特殊性"><a href="#9-2-特殊性" class="headerlink" title="9.2 特殊性"></a>9.2 特殊性</h2><p>有时我们为同一个元素设置了不同的CSS样式代码，浏览器是根据权值来判断使用哪种css样式的，权值高的就使用哪种css样式。</p>
+<p>下面是权值的规则：</p>
+<p>标签的权值为1，类选择符的权值为10，ID选择符的权值最高为100。</p>
+<pre><code>p{color:red;}       /* 权值为1 */
+p span{color:green;}    /* 权值为1+1=2 */
+.warning{color:white;}  /* 权值为10 */
+p span.warning{color:purple;}       /* 权值为1+1+10=12 */
+#footer .note p{color:yellow;}      /* 权值为100+10+1=111 */
+</code></pre><p>注意：还有一个权值比较特殊–继承也有权值但很低，有的文献提出它只有0.1，所以可以理解为继承的权值最低。</p>
+<h2 id="9-3-层叠"><a href="#9-3-层叠" class="headerlink" title="9.3 层叠"></a>9.3 层叠</h2><p><strong>层叠</strong>就是在html文件中对于同一个元素可以有多个css样式存在，当有相同权重的样式存在时，会根据这些css样式的前后顺序来决定，处于最后面的css样式会被应用。</p>
+<p>如下代码：</p>
+<pre><code>p{color:red;}
+p{color:green;}
+&lt;p class=&quot;first&quot;&gt;三年级时，我还是一个&lt;span&gt;胆小如鼠&lt;/span&gt;的小女孩。&lt;/p&gt;
+</code></pre><p>最后p中的文本会设置为green。后面的样式会覆盖前面的样式。</p>
+<p>所以前面的css样式优先级为：</p>
+<p>内联样式表（标签内部）&gt; 嵌入样式表（当前文件中）&gt; 外部样式表（外部文件中）。</p>
+<h2 id="9-4-重要性"><a href="#9-4-重要性" class="headerlink" title="9.4 重要性"></a>9.4 重要性</h2><p>在特殊情况下可以使用!important为某些样式设置具有最高权值。</p>
+<pre><code>p{color:red!important;}
+p{color:green;}
+&lt;p class=&quot;first&quot;&gt;三年级时，我还是一个&lt;span&gt;胆小如鼠&lt;/span&gt;的小女孩。&lt;/p&gt;
+</code></pre><p>这时 p 段落中的文本会显示的red红色。</p>
+<p>注意：!important要写在分号的前面</p>
+<p>注意当网页制作者不设置css样式时，浏览器会按照自己的一套样式来显示网页。并且用户也可以在浏览器中设置自己习惯的样式，比如有的用户习惯把字号设置为大一些。这时注意样式优先级为：<strong>浏览器默认的样式 &lt; 网页制作者样式 &lt; 用户自己设置的样式</strong>，但记住!important优先级样式是个例外，权值高于用户自己设置的样式。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/html/" rel="tag"># html</a>
+          
+            <a href="/tags/css/" rel="tag"># css</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/09/Python中的str与unicode处理方法/" rel="prev" title="Python中的str与unicode处理方法">
+                Python中的str与unicode处理方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="noiron" />
+          <p class="site-author-name" itemprop="name">noiron</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/noiron" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:wukai2048@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/noiron" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      知乎
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HTML-CSS基础课笔记"><span class="nav-number">1.</span> <span class="nav-text">HTML+CSS基础课笔记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Html介绍"><span class="nav-number">2.</span> <span class="nav-text">1. Html介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-Html和CSS的关系"><span class="nav-number">2.1.</span> <span class="nav-text">1.2 Html和CSS的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-认识html标签"><span class="nav-number">2.2.</span> <span class="nav-text">1.3 认识html标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-标签的语法"><span class="nav-number">2.3.</span> <span class="nav-text">1.4 标签的语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-认识html文件基本结构"><span class="nav-number">2.4.</span> <span class="nav-text">1.5 认识html文件基本结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-认识head标签"><span class="nav-number">2.5.</span> <span class="nav-text">1.6 认识head标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-了解HTML的代码注释"><span class="nav-number">2.6.</span> <span class="nav-text">1.7 了解HTML的代码注释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-认识标签（第一部分）"><span class="nav-number">3.</span> <span class="nav-text">2. 认识标签（第一部分）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-语义化，让你的网页更好的被搜索引擎理解"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 语义化，让你的网页更好的被搜索引擎理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-标签，网页上显示的内容放在这里"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 标签，网页上显示的内容放在这里</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-开始学习-lt-p-gt-标签，添加段落"><span class="nav-number">3.3.</span> <span class="nav-text">2.3 开始学习&lt;p&gt;标签，添加段落</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-了解-lt-hx-gt-标签，为你的网页添加标题"><span class="nav-number">3.4.</span> <span class="nav-text">2.4 了解&lt;hx&gt;标签，为你的网页添加标题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">一级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">4.1.</span> <span class="nav-text">二级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.1.1.</span> <span class="nav-text">三级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.1.1.1.</span> <span class="nav-text">四级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">4.1.1.1.1.</span> <span class="nav-text">五级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#undefined"><span class="nav-number">4.1.1.1.1.1.</span> <span class="nav-text">六级标题</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-加入强调语气，使用-lt-strong-gt-和-lt-em-gt-标签"><span class="nav-number">4.2.</span> <span class="nav-text">2.5 加入强调语气，使用&lt;strong&gt;和&lt;em&gt;标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-使用-lt-span-gt-标签为文字设置单独样式"><span class="nav-number">4.3.</span> <span class="nav-text">2.6 使用&lt;span&gt;标签为文字设置单独样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-7-lt-q-gt-标签，短文本引用"><span class="nav-number">4.4.</span> <span class="nav-text">2.7 &lt;q&gt;标签，短文本引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-8-lt-blockquote-gt-标签，长文本引用"><span class="nav-number">4.5.</span> <span class="nav-text">2.8 &lt;blockquote&gt;标签，长文本引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-9-使用-lt-br-gt-标签分行显示文本"><span class="nav-number">4.6.</span> <span class="nav-text">2.9 使用&lt;br&gt;标签分行显示文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-10-为你的网页中添加一些空格"><span class="nav-number">4.7.</span> <span class="nav-text">2.10 为你的网页中添加一些空格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-11-认识-lt-hr-gt-标签，添加水平横线"><span class="nav-number">4.8.</span> <span class="nav-text">2.11 认识&lt;hr&gt;标签，添加水平横线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-12-lt-address-gt-标签，为网页加入地址信息"><span class="nav-number">4.9.</span> <span class="nav-text">2.12 &lt;address&gt;标签，为网页加入地址信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-13-想加入一行代码吗？使用-lt-code-gt-标签"><span class="nav-number">4.10.</span> <span class="nav-text">2.13 想加入一行代码吗？使用&lt;code&gt;标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-14-使用-lt-pre-gt-标签为你的网页加入大段代码"><span class="nav-number">4.11.</span> <span class="nav-text">2.14 使用&lt;pre&gt;标签为你的网页加入大段代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第3章-认识标签（第二部分）"><span class="nav-number">5.</span> <span class="nav-text">第3章 认识标签（第二部分）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-使用ul，添加新闻信息列表"><span class="nav-number">5.1.</span> <span class="nav-text">3.1 使用ul，添加新闻信息列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-使用ol，添加图书销售排行榜"><span class="nav-number">5.2.</span> <span class="nav-text">3.2 使用ol，添加图书销售排行榜</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-认识div在排版中的作用"><span class="nav-number">5.3.</span> <span class="nav-text">3.3 认识div在排版中的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-给div命名，使逻辑更加清晰"><span class="nav-number">5.4.</span> <span class="nav-text">3.4 给div命名，使逻辑更加清晰</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-table标签——认识网页上的表格"><span class="nav-number">5.5.</span> <span class="nav-text">3.5 table标签——认识网页上的表格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-用css样式，为表格加入边框"><span class="nav-number">5.6.</span> <span class="nav-text">3.6 用css样式，为表格加入边框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-caption标签，为表格添加标题和摘要"><span class="nav-number">5.7.</span> <span class="nav-text">3.7 caption标签，为表格添加标题和摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">5.7.1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标题"><span class="nav-number">5.7.2.</span> <span class="nav-text">标题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第4章-认识标签（第三部分）"><span class="nav-number">6.</span> <span class="nav-text">第4章 认识标签（第三部分）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-使用-lt-a-gt-标签，链接到别一个页面"><span class="nav-number">6.1.</span> <span class="nav-text">4.1 使用&lt;a&gt;标签，链接到别一个页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-在新建浏览器窗口中打开链接"><span class="nav-number">6.2.</span> <span class="nav-text">4.2 在新建浏览器窗口中打开链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-使用mailto在网页中链接Email地址"><span class="nav-number">6.3.</span> <span class="nav-text">4.3 使用mailto在网页中链接Email地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-认识-lt-img-gt-标签，为网页插入图片"><span class="nav-number">6.4.</span> <span class="nav-text">4.4 认识&lt;img&gt;标签，为网页插入图片</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第5章-与浏览者交互，表单标签"><span class="nav-number">7.</span> <span class="nav-text">第5章 与浏览者交互，表单标签</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-使用表单标签，与用户交互"><span class="nav-number">7.1.</span> <span class="nav-text">5.1 使用表单标签，与用户交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-文本输入框、密码输入框"><span class="nav-number">7.2.</span> <span class="nav-text">5.2 文本输入框、密码输入框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-文本域，支持多行文本输入"><span class="nav-number">7.3.</span> <span class="nav-text">5.3 文本域，支持多行文本输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-使用单选框、复选框，让用户选择"><span class="nav-number">7.4.</span> <span class="nav-text">5.4 使用单选框、复选框，让用户选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-5-使用下拉列表框，节省空间"><span class="nav-number">7.5.</span> <span class="nav-text">5.5 使用下拉列表框，节省空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-6-使用下拉列表框进行多选"><span class="nav-number">7.6.</span> <span class="nav-text">5.6 使用下拉列表框进行多选</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-使用提交按钮，提交数据"><span class="nav-number">7.7.</span> <span class="nav-text">5.7 使用提交按钮，提交数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-8-使用重置按钮，重置表单信息"><span class="nav-number">7.8.</span> <span class="nav-text">5.8 使用重置按钮，重置表单信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-9-form表单中label标签"><span class="nav-number">7.9.</span> <span class="nav-text">5.9 form表单中label标签</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第6章-开始学习CSS，为网站添加样式"><span class="nav-number">8.</span> <span class="nav-text">第6章 开始学习CSS，为网站添加样式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-认识CSS样式"><span class="nav-number">8.1.</span> <span class="nav-text">6.1 认识CSS样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-CSS样式的优势"><span class="nav-number">8.2.</span> <span class="nav-text">6.2 CSS样式的优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-CSS代码语法"><span class="nav-number">8.3.</span> <span class="nav-text">6.3 CSS代码语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-CSS注释代码"><span class="nav-number">8.4.</span> <span class="nav-text">6.4 CSS注释代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第7章-CSS样式基本知识"><span class="nav-number">9.</span> <span class="nav-text">第7章 CSS样式基本知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-内联式css样式，直接写在现有的HTML标签中"><span class="nav-number">9.1.</span> <span class="nav-text">7.1 内联式css样式，直接写在现有的HTML标签中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-嵌入式css样式，写在当前的文件中"><span class="nav-number">9.2.</span> <span class="nav-text">7.2 嵌入式css样式，写在当前的文件中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-外部式css样式，写在单独的一个文件中"><span class="nav-number">9.3.</span> <span class="nav-text">7.3 外部式css样式，写在单独的一个文件中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-4-三种方法的优先级"><span class="nav-number">9.4.</span> <span class="nav-text">7.4 三种方法的优先级</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第8章-CSS选择器"><span class="nav-number">10.</span> <span class="nav-text">第8章 CSS选择器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-什么是选择器"><span class="nav-number">10.1.</span> <span class="nav-text">8.1 什么是选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-标签选择器"><span class="nav-number">10.2.</span> <span class="nav-text">8.2 标签选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-类选择器"><span class="nav-number">10.3.</span> <span class="nav-text">8.3 类选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-4-ID选择器"><span class="nav-number">10.4.</span> <span class="nav-text">8.4 ID选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-5-类和ID选择器的区别"><span class="nav-number">10.5.</span> <span class="nav-text">8.5 类和ID选择器的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-6-子选择器"><span class="nav-number">10.6.</span> <span class="nav-text">8.6 子选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-7-包含（后代）选择器"><span class="nav-number">10.7.</span> <span class="nav-text">8.7 包含（后代）选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-8-通用选择器"><span class="nav-number">10.8.</span> <span class="nav-text">8.8 通用选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-9-伪类选择符"><span class="nav-number">10.9.</span> <span class="nav-text">8.9 伪类选择符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-10-分组选择符"><span class="nav-number">10.10.</span> <span class="nav-text">8.10 分组选择符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第9章-CSS的继承、层叠和特殊性"><span class="nav-number">11.</span> <span class="nav-text">第9章 CSS的继承、层叠和特殊性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#9-1-继承"><span class="nav-number">11.1.</span> <span class="nav-text">9.1 继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-2-特殊性"><span class="nav-number">11.2.</span> <span class="nav-text">9.2 特殊性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-3-层叠"><span class="nav-number">11.3.</span> <span class="nav-text">9.3 层叠</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-4-重要性"><span class="nav-number">11.4.</span> <span class="nav-text">9.4 重要性</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noiron</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

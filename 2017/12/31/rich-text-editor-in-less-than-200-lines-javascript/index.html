@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript,编辑器," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="吴锴的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="前段时间在寻找一些关于富文本编辑器的资料，然后发现了这个名为 Pell 的项目，它是一个所见即所得（WYSIWYG）的文本编辑器，虽然它的功能很简单，但是令人吃惊的是它只有 1kb 大小。而项目最核心的文件 pell.js 只有130行，即使加上其它部分，总的 js 数量也不到200行。这引起了我的兴趣，决定看看它的源码是如何做到这一点的。">
+<meta name="keywords" content="javascript,编辑器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不到200行 JavaScript 代码如何实现富文本编辑器">
+<meta property="og:url" content="http://noiron.github.io/2017/12/31/rich-text-editor-in-less-than-200-lines-javascript/index.html">
+<meta property="og:site_name" content="吴锴的博客">
+<meta property="og:description" content="前段时间在寻找一些关于富文本编辑器的资料，然后发现了这个名为 Pell 的项目，它是一个所见即所得（WYSIWYG）的文本编辑器，虽然它的功能很简单，但是令人吃惊的是它只有 1kb 大小。而项目最核心的文件 pell.js 只有130行，即使加上其它部分，总的 js 数量也不到200行。这引起了我的兴趣，决定看看它的源码是如何做到这一点的。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2017-12-29-pell-editor-toobar.png">
+<meta property="og:updated_time" content="2018-12-31T14:15:52.769Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="不到200行 JavaScript 代码如何实现富文本编辑器">
+<meta name="twitter:description" content="前段时间在寻找一些关于富文本编辑器的资料，然后发现了这个名为 Pell 的项目，它是一个所见即所得（WYSIWYG）的文本编辑器，虽然它的功能很简单，但是令人吃惊的是它只有 1kb 大小。而项目最核心的文件 pell.js 只有130行，即使加上其它部分，总的 js 数量也不到200行。这引起了我的兴趣，决定看看它的源码是如何做到这一点的。">
+<meta name="twitter:image" content="http://noiron.github.io/asset/images/2017-12-29-pell-editor-toobar.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://noiron.github.io/2017/12/31/rich-text-editor-in-less-than-200-lines-javascript/"/>
+
+
+
+
+
+  <title>不到200行 JavaScript 代码如何实现富文本编辑器 | 吴锴的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111511044-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吴锴的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life? Don't talk to me about life!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-demo">
+          <a href="/demo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            个人项目
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2017/12/31/rich-text-editor-in-less-than-200-lines-javascript/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="noiron">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吴锴的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">不到200行 JavaScript 代码如何实现富文本编辑器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-31T00:00:00+08:00">
+                2017-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前段时间在寻找一些关于富文本编辑器的资料，然后发现了这个名为 <a href="https://github.com/jaredreich/pell" target="_blank" rel="noopener">Pell</a> 的项目，它是一个所见即所得（WYSIWYG）的文本编辑器，虽然它的功能很简单，但是令人吃惊的是它只有 1kb 大小。而项目最核心的文件 <a href="https://github.com/jaredreich/pell/blob/master/src/pell.js" target="_blank" rel="noopener">pell.js</a> 只有130行，即使加上其它部分，总的 js 数量也不到200行。这引起了我的兴趣，决定看看它的源码是如何做到这一点的。</p>
+<a id="more"></a>
+<p>项目的主要代码在 <code>pell.js</code> 文件中，其结构很简单，主要功能的实现依赖于以下的几个部分</p>
+<ul>
+<li><code>actions</code> 对象</li>
+<li><code>exec()</code> 函数</li>
+<li><code>init()</code> 函数</li>
+</ul>
+<h2 id="Document-execCommand"><a href="#Document-execCommand" class="headerlink" title="Document.execCommand()"></a>Document.execCommand()</h2><p>先从最简单的部分看起， <code>exec()</code> 函数只有下面三行：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> exec = <span class="function">(<span class="params">command, value = <span class="literal">null</span></span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">document</span>.execCommand(command, <span class="literal">false</span>, value);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>它将 <code>document.execCommand()</code> 进行了一个简单的包装，<a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand" target="_blank" rel="noopener">Document.execCommand()</a> 就是这个编辑器的核心，其语法如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bool = <span class="built_in">document</span>.execCommand(aCommandName, aShowDefaultUI, aValueArgument)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>aCommandName</code> 是表示想执行的命令的字符串，比如：加粗 ‘bold’，创建链接 ‘createLink’，改变字体大小 ‘fontSize’ 等等</li>
+<li><code>aShowDefaultUI</code> 是否显示默认的用户界面</li>
+<li><code>aValueArgument</code> 有些命令需要额外的输入，如插入图片、链接时需要给出地址</li>
+</ul>
+<p>注：经过我的试验，在 Chrome 下改变 aShowDefaultUI 的值并未发现影响，<a href="https://stackoverflow.com/questions/38188015/what-is-the-the-default-user-interface-referred-to-by-the-ashowdefaultui-param" target="_blank" rel="noopener">这个 stackoverflow 的问题</a>中提到这是一个来自于旧版 IE 的参数，所以这里设置为默认的 false 即可。</p>
+<h2 id="actions-对象"><a href="#actions-对象" class="headerlink" title="actions 对象"></a>actions 对象</h2><p>文件中定义了一个名为 <code>actions</code> 的对象，对应的是下图工具栏上的这一行按钮， <code>actions</code> 中的每个子对象都保存了一个按钮的属性。</p>
+<p><img src="/asset/images/2017-12-29-pell-editor-toobar.png" alt="2017-12-29-pell-editor-toobar.png"></p>
+<p>部分代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> actions = &#123;</span><br><span class="line">    bold: &#123;</span><br><span class="line">        icon: <span class="string">'&lt;b&gt;B&lt;/b&gt;'</span>,</span><br><span class="line">        title: <span class="string">'Bold'</span>,</span><br><span class="line">        result: <span class="function"><span class="params">()</span> =&gt;</span> exec(<span class="string">'bold'</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    italic: &#123;</span><br><span class="line">        icon: <span class="string">'&lt;i&gt;I&lt;/i&gt;'</span>,</span><br><span class="line">        title: <span class="string">'Italic'</span>,</span><br><span class="line">        result: <span class="function"><span class="params">()</span> =&gt;</span> exec(<span class="string">'italic'</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    underline: &#123;</span><br><span class="line">        icon: <span class="string">'&lt;u&gt;U&lt;/u&gt;'</span>,</span><br><span class="line">        title: <span class="string">'Underline'</span>,</span><br><span class="line">        result: <span class="function"><span class="params">()</span> =&gt;</span> exec(<span class="string">'underline'</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// …</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码中显示了名为 <code>bold</code>，<code>italic</code>，<code>underline</code> 的三个对象属性，对应于工具栏中前方的<strong>加粗</strong>、<em>斜体</em>、下划线按钮，可以看出它们的结构是相同的，都有下列三个属性：</p>
+<ul>
+<li><code>icon</code>: 如何在工具栏中显示</li>
+<li><code>title</code>: 就是 title 啦</li>
+<li><code>result</code>: 一个函数，会赋给按钮作为点击事件，调用之前所提到的 <code>exec()</code> 函数来对文本进行操作</li>
+</ul>
+<p>现在已有了 <code>actions</code> 对象，那么如何使用它呢？这就要看看 <code>init()</code> 函数了，它会根据一定的规则从 <code>actions</code> 对象中选出元素组成一个数组，数组的每一项都会生成一个按钮。下面代码中的 <code>settings.actions</code> 即为此数组，其中的每个元素都对应一个显示在工具栏上的按钮。<code>settings.actions</code> 的生成规则会在后面进行解释。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pell.js 中的 init() 函数</span></span><br><span class="line">settings.actions.forEach(<span class="function"><span class="params">action</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 新建一个按钮元素</span></span><br><span class="line">    <span class="keyword">const</span> button = <span class="built_in">document</span>.createElement(<span class="string">'button'</span>)</span><br><span class="line">    <span class="comment">// 给按钮加上 css 样式</span></span><br><span class="line">    button.className = settings.classes.button</span><br><span class="line">    <span class="comment">// 把 icon 属性作为内容显示出来</span></span><br><span class="line">    button.innerHTML = action.icon</span><br><span class="line">    button.title = action.title</span><br><span class="line">    <span class="comment">// 把 result 属性赋给按钮作为点击事件</span></span><br><span class="line">    button.onclick = action.result</span><br><span class="line">    <span class="comment">// 将创建的按钮添加到工具栏上</span></span><br><span class="line">    actionbar.appendChild(button)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这样数组中的每个元素就都生成了一个工具栏上的按钮了。 </p>
+<h2 id="init-初始化函数"><a href="#init-初始化函数" class="headerlink" title="init() 初始化函数"></a>init() 初始化函数</h2><p>想使用 pell 编辑器时，只要调用 <code>init()</code> 函数来初始化一个编辑器即可。它接收一个 <code>setting</code> 对象作为参数，其中包含这样的一些属性：</p>
+<ul>
+<li><code>element</code>: 编辑器的 DOM 元素</li>
+<li><code>styleWithCSS</code>: 设置为 true 时，将会用 <code>&lt;span style=&quot;font-weight: bold;&quot;&gt;&lt;/span&gt;</code> 代替 <code>&lt;b&gt;&lt;/b&gt;</code></li>
+<li><code>actions</code></li>
+<li><code>onChange</code></li>
+</ul>
+<p>其中最重要的是 <code>actions</code>，它是一个数组，包含了你想在工具栏显示的按钮列表。</p>
+<p><code>actions</code> 数组中可以有这几种元素：</p>
+<ul>
+<li>一个字符串</li>
+<li>一个有 <code>name</code> 属性的对象</li>
+<li>一个对象，没有 <code>name</code> 属性，但有生成一个按钮的必需属性 <code>icon</code>，<code>result</code> 等</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">actions: [</span><br><span class="line">  <span class="string">'bold'</span>,</span><br><span class="line">  <span class="string">'underline'</span>,</span><br><span class="line">  <span class="string">'italic'</span>,</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">'image'</span>,</span><br><span class="line">    result: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> url = <span class="built_in">window</span>.prompt(<span class="string">'Enter the image URL'</span>)</span><br><span class="line">      <span class="keyword">if</span> (url) <span class="built_in">window</span>.pell.exec(<span class="string">'insertImage'</span>, ensureHTTP(url))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>在 <code>init()</code> 函数中会把这个 <code>actions</code>参数 和 pell.js 中定义的 <code>actions</code>对象组合起来，可以将 <code>actions</code> 对象当作一个默认设置，看以下代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pell.js 中的 init() 函数</span></span><br><span class="line">settings.actions = settings.actions</span><br><span class="line">    ? settings.actions.map(<span class="function"><span class="params">action</span> =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> action === <span class="string">'string'</span>) <span class="keyword">return</span> actions[action]</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果参数中传入的 action 已经在默认设置中存在，用传入的参数覆盖默认设置</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (actions[action.name]) &#123;</span><br><span class="line">            <span class="keyword">return</span> &#123; ...actions[action.name], ...action &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> action</span><br><span class="line">    &#125;)</span><br><span class="line">    : <span class="built_in">Object</span>.keys(actions).map(<span class="function"><span class="params">action</span> =&gt;</span> actions[action])</span><br></pre></td></tr></table></figure>
+<p>如果参数对象 <code>setting</code> 中不包含 <code>actions</code> 数组,  则会默认使用之前定义的 <code>actions</code> 对象来初始化。</p>
+<p>init() 函数里还有一个重要的部分，就是创建一个可编辑区域，这里创建了一个 <code>div</code> 元素，将其 <code>contentEditable</code> 属性设为 <code>true</code>，从而可以在这里使用之前提到的 <code>document.execCommand()</code> 命令了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建编辑区域的元素</span></span><br><span class="line">settings.element.content = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>)</span><br><span class="line"><span class="comment">// 让 div 成为可编辑状态</span></span><br><span class="line">settings.element.content.contentEditable = <span class="literal">true</span></span><br><span class="line">settings.element.content.className = settings.classes.content</span><br><span class="line"><span class="comment">// 当用户输入时，更新页面的相应部分</span></span><br><span class="line">settings.element.content.oninput = <span class="function"><span class="params">event</span> =&gt;</span> </span><br><span class="line">    settings.onChange(event.target.innerHTML)</span><br><span class="line">settings.element.content.onkeydown = preventTab</span><br><span class="line">settings.element.appendChild(settings.element.content)</span><br></pre></td></tr></table></figure>
+<h2 id="流程整理"><a href="#流程整理" class="headerlink" title="流程整理"></a>流程整理</h2><p>最后以“插入链接”为例来梳理下整个编辑器的流程：</p>
+<p>一、在调用 <code>init()</code> 函数时，在参数对象的 <code>action</code> 数组中加入以下一项</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    name: <span class="string">'link'</span>,</span><br><span class="line">    result: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> url = <span class="built_in">window</span>.prompt(<span class="string">'Enter the link URL'</span>)</span><br><span class="line">        <span class="keyword">if</span> (url) <span class="built_in">window</span>.pell.exec(<span class="string">'createLink'</span>, ensureHTTP(url))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>二、在 <code>init()</code> 的运行过程中，会检查已定义的 <code>actions</code> 对象中是否有 <code>link</code> 这个属性。经检查属性确实存在</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">link: &#123;</span><br><span class="line">    icon: <span class="string">'&amp;#128279;'</span>,</span><br><span class="line">    title: <span class="string">'Link'</span>,</span><br><span class="line">    result: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> url = <span class="built_in">window</span>.prompt(<span class="string">'Enter the link URL'</span>)</span><br><span class="line">        <span class="keyword">if</span> (url) exec(<span class="string">'createLink'</span>, url)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为传入的参数中有 <code>result</code> 这一项，所以用传入的 <code>result</code> 来代替 <code>link</code> 对象中的默认值，然后将修改过的 <code>link</code> 对象放入 <code>settings.actions</code> 数组中。</p>
+<p>三、对 <code>settings.actions</code> 数组进行一次迭代来生成工具栏，<code>link</code> 对象作为其中的一项生成了一个“插入链接”的按钮。<code>result</code> 属性成为其点击事件。</p>
+<p>四、点击“插入链接”的按钮后，会让你输入一个 url，然后调用 <code>exec(&#39;createLink&#39;, url)</code> 在编辑区域插入该链接。</p>
+<p>编辑器其它按钮的功能流程也类似。</p>
+<p>这样 Pell 编辑器的大部分内容就讲解完毕了，剩余部分还需要自己去看源码。毕竟项目的代码不长，以此作为文本编辑器的入门倒不错。</p>
+<hr>
+<p>2017年的最后一篇文章了，再见，2017。</p>
+<p><a href="http://www.wukai.me/2017/12/31/rich-text-editor-in-less-than-200-lines-javascript/" target="_blank" rel="noopener">本文原地址</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+            <a href="/tags/编辑器/" rel="tag"># 编辑器</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/10/light-2d-javascript/" rel="next" title="用 JavaScript 画光：基础">
+                <i class="fa fa-chevron-left"></i> 用 JavaScript 画光：基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/01/2017-annual-summary/" rel="prev" title="2017年总结">
+                2017年总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="noiron" />
+          <p class="site-author-name" itemprop="name">noiron</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/noiron" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:wukai2048@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/noiron" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      知乎
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Document-execCommand"><span class="nav-number">1.</span> <span class="nav-text">Document.execCommand()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#actions-对象"><span class="nav-number">2.</span> <span class="nav-text">actions 对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#init-初始化函数"><span class="nav-number">3.</span> <span class="nav-text">init() 初始化函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流程整理"><span class="nav-number">4.</span> <span class="nav-text">流程整理</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noiron</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

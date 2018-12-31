@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript,游戏开发," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="吴锴的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="如果开发一个塔防游戏，很自然的会遇上这么两个名字很像的问题：  Path-finding: 如果知道起点和终点，如何在其间找到一条路径 Path-following: 已知从起点到终点的路径，物体如何才能沿着它行进  本文将要讨论的是第二个问题 path following，给定一条路径，看物体如何沿着它从起点运行至终点。为了方便描述，接下来的内容中，用单词 Boid 来表示行进的物体或塔防中的敌">
+<meta name="keywords" content="javascript,游戏开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="塔防游戏中的敌人如何沿路径前进 (JavaScript 实现)">
+<meta property="og:url" content="http://noiron.github.io/2017/12/09/boid-path-following/index.html">
+<meta property="og:site_name" content="吴锴的博客">
+<meta property="og:description" content="如果开发一个塔防游戏，很自然的会遇上这么两个名字很像的问题：  Path-finding: 如果知道起点和终点，如何在其间找到一条路径 Path-following: 已知从起点到终点的路径，物体如何才能沿着它行进  本文将要讨论的是第二个问题 path following，给定一条路径，看物体如何沿着它从起点运行至终点。为了方便描述，接下来的内容中，用单词 Boid 来表示行进的物体或塔防中的敌">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2017-12-09-path-following-map.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2017-12-09-path-following-1.png">
+<meta property="og:updated_time" content="2018-12-31T14:15:52.769Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="塔防游戏中的敌人如何沿路径前进 (JavaScript 实现)">
+<meta name="twitter:description" content="如果开发一个塔防游戏，很自然的会遇上这么两个名字很像的问题：  Path-finding: 如果知道起点和终点，如何在其间找到一条路径 Path-following: 已知从起点到终点的路径，物体如何才能沿着它行进  本文将要讨论的是第二个问题 path following，给定一条路径，看物体如何沿着它从起点运行至终点。为了方便描述，接下来的内容中，用单词 Boid 来表示行进的物体或塔防中的敌">
+<meta name="twitter:image" content="http://noiron.github.io/asset/images/2017-12-09-path-following-map.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://noiron.github.io/2017/12/09/boid-path-following/"/>
+
+
+
+
+
+  <title>塔防游戏中的敌人如何沿路径前进 (JavaScript 实现) | 吴锴的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111511044-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吴锴的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life? Don't talk to me about life!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-demo">
+          <a href="/demo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            个人项目
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2017/12/09/boid-path-following/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="noiron">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吴锴的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">塔防游戏中的敌人如何沿路径前进 (JavaScript 实现)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T00:00:00+08:00">
+                2017-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>如果开发一个塔防游戏，很自然的会遇上这么两个名字很像的问题：</p>
+<ul>
+<li><strong>Path-finding</strong>: 如果知道起点和终点，如何在其间找到一条路径</li>
+<li><strong>Path-following</strong>: 已知从起点到终点的路径，物体如何才能沿着它行进</li>
+</ul>
+<p>本文将要讨论的是第二个问题 <strong>path following</strong>，给定一条路径，看物体如何沿着它从起点运行至终点。为了方便描述，接下来的内容中，用单词 <a href="https://en.wikipedia.org/wiki/Boids" target="_blank" rel="noopener">Boid</a> 来表示行进的物体或塔防中的敌人。</p>
+<p>接下来会用一种简单的方法来解决这一问题，最终完成的代码库可见 GitHub: <a href="https://github.com/noiron/boid-path-following" target="_blank" rel="noopener">boid-path-following</a>，repo 的多个分支对应了文中的不同步骤。</p>
+<a id="more"></a>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>先来看看如何标识出画面中的位置，首先画面被一系列的横纵线分成了许多网格，对于地图范围内的一个点，它会有自己的像素坐标 (x, y)，同时它所处的格子也有自己的坐标 (col, row) 或 (xIndex, yIndex)，表示所处的列和行。</p>
+<p><img src="/asset/images/2017-12-09-path-following-map.png" alt=""></p>
+<p>为了区分，下文中提到<strong>像素坐标</strong>即为用像素表示的坐标，<strong>网格坐标</strong>表示点在网格中的列和行。</p>
+<p>在这种表示方法下，还需要一个工具函数 <code>index2Px(col, row)</code>，用于计算格子中心的像素坐标。</p>
+<p>接下来给出路径的坐标，路径是如下的一个二维数组：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = [[<span class="number">0</span>, <span class="number">1</span>], [COLS - <span class="number">4</span>, <span class="number">1</span>], [COLS - <span class="number">4</span>, <span class="number">4</span>], [<span class="number">6</span>, <span class="number">4</span>], [<span class="number">6</span>, <span class="number">7</span>], <span class="comment">/* 部分省略 */</span>]</span><br></pre></td></tr></table></figure>
+<p>每一项都是路径上一个点的网格坐标，将这些点用直线连接起来后就得到了 boid 行进的路径。我们的目标就是要让 boid 能够从路径第一个坐标移动至最后一个坐标。</p>
+<h2 id="Boid-如何沿直线前进"><a href="#Boid-如何沿直线前进" class="headerlink" title="Boid 如何沿直线前进"></a>Boid 如何沿直线前进</h2><p>先考虑最简单的问题，如何让 Boid 沿着一条直线行进。</p>
+<p>物体的移动需要位置和速度，为了表示其像素坐标，<code>boid</code> 需要 <code>x</code>, <code>y</code> 属性；其速度需要 <code>speed</code> 属性，同时还需要一个 <code>angle</code>，以便计算出速度在两个方向上的分量 <code>vx</code>, <code>vy</code>。</p>
+<p>动画效果的实现需要用 <code>requestAnimationFrame</code> 函数，每一秒为60帧，每一帧中都会执行一次循环，在其中改变位置：</p>
+<pre><code>下一时刻的位置 = 当前时刻的位置 + 速度
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示意代码</span></span><br><span class="line"><span class="comment">// Boid 类的 step() 方法</span></span><br><span class="line">step() &#123;</span><br><span class="line">    <span class="keyword">const</span> speed = <span class="keyword">this</span>.speed;</span><br><span class="line">    <span class="keyword">const</span> angle = <span class="built_in">Math</span>.PI / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.vx = <span class="built_in">Math</span>.cos(angle) * speed;</span><br><span class="line">    <span class="keyword">this</span>.vy = <span class="built_in">Math</span>.sin(angle) * speed;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果 vx, vy 不变化，则会沿一条直线前进</span></span><br><span class="line">    <span class="keyword">this</span>.x += <span class="keyword">this</span>.vx;</span><br><span class="line">    <span class="keyword">this</span>.y += <span class="keyword">this</span>.vy; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在每一个循环中，boid 的位置都会发生变化，在新的位置上将其画出即可看到 boid 沿直线运动的效果。</p>
+<p>这一部分可在示例代码库的 <code>demo01/go-straight</code> 分支上查看：</p>
+<pre><code>git checkout demo01/go-straight
+npm run demo01
+</code></pre><p>现在 boid 已经动起来了，但是却没法停止，这就是我们接下来需要考虑的问题。</p>
+<h2 id="如何让-boid-在目标点处停止"><a href="#如何让-boid-在目标点处停止" class="headerlink" title="如何让 boid 在目标点处停止"></a>如何让 boid 在目标点处停止</h2><p>要让 boid 能够知道自己到达了目标点，则在每一次循环过程中，需要计算出此刻离目标点的距离分量 <code>dx</code>，<code>dy</code>，据此算出距离 <code>dist</code>，将其与速度 <code>speed</code> 进行比较。如果 <code>dist &gt; speed</code>，说明物体离目标点还挺远，继续将速度加到位置上即可。反之则表明物体将要到达终点，此时若直接加上速度，boid 可能会越过目标点，因此需要一点不同的处理。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示意代码</span></span><br><span class="line">step() &#123;</span><br><span class="line">    <span class="keyword">if</span> (reachDest) &#123;</span><br><span class="line">        <span class="comment">// 已到达终点，可根据实际需要进行操作            </span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> speed = <span class="keyword">this</span>.speed;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 与目标点的距离</span></span><br><span class="line">    <span class="keyword">this</span>.dx = target.x - <span class="keyword">this</span>.x;</span><br><span class="line">    <span class="keyword">this</span>.dy = target.y - <span class="keyword">this</span>.y;</span><br><span class="line">    <span class="keyword">this</span>.dist = <span class="built_in">Math</span>.sqrt(<span class="keyword">this</span>.dx * <span class="keyword">this</span>.dx + <span class="keyword">this</span>.dy * <span class="keyword">this</span>.dy);</span><br><span class="line">    <span class="keyword">this</span>.angle = <span class="built_in">Math</span>.atan2(<span class="keyword">this</span>.dy, <span class="keyword">this</span>.dx);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 速度分量</span></span><br><span class="line">    <span class="keyword">this</span>.vx = <span class="built_in">Math</span>.cos(<span class="keyword">this</span>.angle) * speed;</span><br><span class="line">    <span class="keyword">this</span>.vy = <span class="built_in">Math</span>.sin(<span class="keyword">this</span>.angle) * speed;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.dist &gt; speed) &#123;</span><br><span class="line">        <span class="keyword">this</span>.x += <span class="keyword">this</span>.vx;</span><br><span class="line">        <span class="keyword">this</span>.y += <span class="keyword">this</span>.vy; </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 当前时刻的位置加上速度后超过了当前目标点</span></span><br><span class="line">        <span class="comment">// 物体下一时刻将处于当前目标点的位置</span></span><br><span class="line">        <span class="keyword">this</span>.x = target.x;</span><br><span class="line">        <span class="keyword">this</span>.y = target.y;</span><br><span class="line">        <span class="keyword">this</span>.reachDest = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这一部分可在示例代码库的 <code>demo01/stop</code> 分支上查看：</p>
+<pre><code>git checkout demo01/stop
+npm run demo01
+</code></pre><p>此时，到达了终点的 boid 被清除而不再显示。</p>
+<h2 id="如何让-boid-能够转向"><a href="#如何让-boid-能够转向" class="headerlink" title="如何让 boid 能够转向"></a>如何让 boid 能够转向</h2><p>前面叙述中为了简化，路径中只有起点和终点，所以 boid 没有机会转向，那当路径变复杂了之后，boid 该如何运动？</p>
+<p>前面已经提到过，<code>path</code> 是一个记录了路径网格坐标的数组，boid 会从中取一个坐标作为自己的当前目标点，然后一直向前行进，到达了这个目标点之后，它会从 <code>path</code> 数组中取出下一个坐标，继续移动至该位置。循环以上过程，直到 boid 到达 <code>path</code> 中的最后一个坐标。</p>
+<p>上面的代码中，我们的目标点 <code>target</code> 固定为 <code>path</code> 的最后一个坐标，而现在每一次转向时 <code>target</code> 都会变化，所以加入这样的两个变量：</p>
+<ul>
+<li><code>waypoint</code> 表示<strong>当前</strong>目标点的索引</li>
+<li><code>angleFlag</code> 记录是否需要转向。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// Boid 的 step() 中的部分示意代码</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 每次转向后目标点需要重新计算 */</span></span><br><span class="line"><span class="keyword">const</span> waypoint = path[<span class="keyword">this</span>.waypoint];   <span class="comment">// 当前目标点的网格坐标</span></span><br><span class="line"><span class="keyword">const</span> target = index2Px(...waypoint);   <span class="comment">// 当前目标点的像素坐标</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断是否需要转向，如果需要转向，则重新计算角度</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.angleFlag) &#123;</span><br><span class="line">    <span class="keyword">this</span>.angle = <span class="built_in">Math</span>.atan2(<span class="keyword">this</span>.dy, <span class="keyword">this</span>.dx);</span><br><span class="line">    <span class="keyword">this</span>.angleFlag = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 每次到达一个目标点之后，都要检查是否为终点</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.waypoint + <span class="number">1</span> &gt;= path.length) &#123;</span><br><span class="line">    <span class="comment">// 到达终点</span></span><br><span class="line">    <span class="keyword">this</span>.reachDest = <span class="literal">true</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.waypoint++;</span><br><span class="line">    <span class="keyword">this</span>.angleFlag = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这一部分可在示例代码库的 <code>demo01/steering</code> 分支上查看：</p>
+<pre><code>git checkout demo01/steering
+npm run demo01
+</code></pre><p>结果可见下图：<br><img src="/asset/images/2017-12-09-path-following-1.png" alt=""></p>
+<p>到此为止，这种 boid 沿路径行进的方法已经讲解完毕了。建议读者查看一下 repo 中的代码，自己修改部分代码，比如更改路径，看结果会有何不同。</p>
+<h2 id="其它的方法"><a href="#其它的方法" class="headerlink" title="其它的方法"></a>其它的方法</h2><p>这一种方法中的确实现了沿路径移动的效果，但是有点儿单调，boid 只能在路径的中轴线上移动，而且它们之间也没有交互的效果。<a href="http://natureofcode.com/book/" target="_blank" rel="noopener">The Nature of Code</a> 这本书的第六章 <a href="http://natureofcode.com/book/chapter-6-autonomous-agents/" target="_blank" rel="noopener">Autonomous Agents</a> 中介绍了另一种稍微复杂的方法来实现 path following。</p>
+<p>我之前参考他人的代码实现了<a href="http://www.wukai.me/html-demo/path-following/" target="_blank" rel="noopener">这种方法的一个演示版本</a>，其代码在<a href="https://github.com/noiron/html-demo/tree/master/path-following" target="_blank" rel="noopener">此处</a>。</p>
+<p>(也许之后会补一篇博客来介绍 <em>The Nature of Code</em> 中的实现，但谁知道会不会写呢🤔)</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后，<a href="https://github.com/noiron/tower-defense-js" target="_blank" rel="noopener">我最近在写的这个塔防游戏</a>中就使用了本文介绍的 path following 方法。虽然游戏还没完成，但点进去看看再给个 star 又不费电😀。</p>
+<hr>
+<p><a href="http://www.wukai.me/2017/12/09/boid-path-following/" target="_blank" rel="noopener">本文地址：塔防游戏中的敌人如何沿路径前进 (JavaScript 实现)</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+            <a href="/tags/游戏开发/" rel="tag"># 游戏开发</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/25/react-router-v4-code-splitting/" rel="next" title="React Router v4 之代码分割：从放弃到入门">
+                <i class="fa fa-chevron-left"></i> React Router v4 之代码分割：从放弃到入门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/10/light-2d-javascript/" rel="prev" title="用 JavaScript 画光：基础">
+                用 JavaScript 画光：基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="noiron" />
+          <p class="site-author-name" itemprop="name">noiron</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/noiron" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:wukai2048@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/noiron" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      知乎
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Boid-如何沿直线前进"><span class="nav-number">2.</span> <span class="nav-text">Boid 如何沿直线前进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何让-boid-在目标点处停止"><span class="nav-number">3.</span> <span class="nav-text">如何让 boid 在目标点处停止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何让-boid-能够转向"><span class="nav-number">4.</span> <span class="nav-text">如何让 boid 能够转向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它的方法"><span class="nav-number">5.</span> <span class="nav-text">其它的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noiron</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

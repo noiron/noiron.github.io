@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript,神经网络," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="吴锴的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="这篇文章是我去年看到的一个很有趣的项目，还试着模仿它的代码写一个类似的项目出来，不过一直没有完成。这里把原作者的一篇相关博客翻译过来，说不定有更多的人对此感兴趣。  项目演示：原作者用JavaScript实现的demo 原文地址：creatures avoiding planks 原作者的twitter地址：hardmaru’s twitter 原作者的另一个实验：生成伪汉字的实验 译文地址：用神">
+<meta name="keywords" content="javascript,神经网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(译)用神经网络实现能够自主避让障碍的生物">
+<meta property="og:url" content="http://noiron.github.io/2016/03/01/creatures-avoiding-planks/index.html">
+<meta property="og:site_name" content="吴锴的博客">
+<meta property="og:description" content="这篇文章是我去年看到的一个很有趣的项目，还试着模仿它的代码写一个类似的项目出来，不过一直没有完成。这里把原作者的一篇相关博客翻译过来，说不定有更多的人对此感兴趣。  项目演示：原作者用JavaScript实现的demo 原文地址：creatures avoiding planks 原作者的twitter地址：hardmaru’s twitter 原作者的另一个实验：生成伪汉字的实验 译文地址：用神">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2016-03-01-planks_blog.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2016-03-01-perceptron.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2016-03-01-planks_net_8_recurrent.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2016-03-01-planks_training-1024x1022.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2016-03-01-plank_boid_genes-1024x1024.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2016-03-01-planks_final_result1-1024x576.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2016-03-01-planks_mating.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2016-03-01-planks_crossover-1024x440.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2016-03-01-planks_xray-300x300.png">
+<meta property="og:updated_time" content="2018-12-31T14:15:52.766Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(译)用神经网络实现能够自主避让障碍的生物">
+<meta name="twitter:description" content="这篇文章是我去年看到的一个很有趣的项目，还试着模仿它的代码写一个类似的项目出来，不过一直没有完成。这里把原作者的一篇相关博客翻译过来，说不定有更多的人对此感兴趣。  项目演示：原作者用JavaScript实现的demo 原文地址：creatures avoiding planks 原作者的twitter地址：hardmaru’s twitter 原作者的另一个实验：生成伪汉字的实验 译文地址：用神">
+<meta name="twitter:image" content="http://noiron.github.io/asset/images/2016-03-01-planks_blog.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://noiron.github.io/2016/03/01/creatures-avoiding-planks/"/>
+
+
+
+
+
+  <title>(译)用神经网络实现能够自主避让障碍的生物 | 吴锴的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111511044-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吴锴的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life? Don't talk to me about life!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-demo">
+          <a href="/demo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            个人项目
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2016/03/01/creatures-avoiding-planks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="noiron">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吴锴的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">(译)用神经网络实现能够自主避让障碍的生物</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-01T00:00:00+08:00">
+                2016-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这篇文章是我去年看到的一个很有趣的项目，还试着模仿它的代码写一个类似的项目出来，不过一直没有完成。这里把原作者的一篇相关博客翻译过来，说不定有更多的人对此感兴趣。</p>
+<ul>
+<li>项目演示：<a href="http://otoro.net/planks/" target="_blank" rel="noopener">原作者用JavaScript实现的demo</a></li>
+<li>原文地址：<a href="http://blog.otoro.net/2015/05/07/creatures-avoiding-planks/" target="_blank" rel="noopener">creatures avoiding planks</a></li>
+<li>原作者的twitter地址：<a href="https://twitter.com/hardmaru" target="_blank" rel="noopener">hardmaru’s twitter</a></li>
+<li>原作者的另一个实验：<a href="http://otoro.net/kanji/" target="_blank" rel="noopener">生成伪汉字的实验</a></li>
+<li>译文地址：<a href="http://noiron.github.io/2016/03/01/creatures-avoiding-planks/">用神经网络实现能够自主避让障碍的生物</a></li>
+<li>翻译：吴锴（noiron）</li>
+</ul>
+<p><strong>注意：原文中引用了一些墙外链接，请配合梯子食用</strong></p>
+<p>以下为译文内容：</p>
+<hr>
+<p><img src="/asset/images/2016-03-01-planks_blog.png" alt=""><br><strong>具有神经网络大脑的agent为了生存而进化</strong></p>
+<p><a href="http://otoro.net/planks/" target="_blank" rel="noopener">这里是javascript的演示</a></p>
+<p>最近我看到了一个模拟<a href="https://www.youtube.com/watch?v=fmSTNu0Zjh8" target="_blank" rel="noopener">视频</a>，展示了使用进化技术来训练agent，让它们能够避开移动的障碍物。<a href="https://www.reddit.com/r/gamedev/comments/31idqb/im_building_evolution_based_ai_toolkit_to/" target="_blank" rel="noopener">这里使用的方法</a>似乎是<a href="http://www.cs.ucf.edu/~kstanley/neat.html" target="_blank" rel="noopener">NEAT</a>算法的变种。NEAT算法用于神经网络拓扑结构的进化，使其能够正确完成特定的任务。它是为了<a href="http://en.wikipedia.org/wiki/Unity_(game_engine" target="_blank" rel="noopener">Unity 5</a>游戏引擎而写的，想被整合进综合的游戏AI中，这引起了我的兴趣。</p>
+<p>这个结果很酷而且动起来似乎很优雅，所以我想试着用javascript实现一个类似的demo，这样就可以在浏览器中运行了。在玩了一下基本的实现后，我发现对于障碍躲避问题，一个简单的神经网络就可以高效的完成了，甚至于一个完全连接的神经网络都算是杀鸡用牛刀了。最后我也意识到就算是一个简单的类<a href="http://upload.wikimedia.org/wikipedia/commons/3/31/Perceptron.svg" target="_blank" rel="noopener">感知器（perceptron）</a>网络都能够很好地完成任务，而在之前提到的障碍躲避demo中，隐藏单元也并不能够增加多少好处。</p>
+<p><img src="/asset/images/2016-03-01-perceptron.png" alt="perceptron"><br><strong>简单的感知器图解（维基百科）</strong></p>
+<p>因为agent可以在探测到障碍物的瞬间自由地向任意方向移动，而且agent之间不会产生相互作用，因此这个任务变得太简单了，使用NEAT算法的杀伤力过大了。我们使用一个简单的类感知器网络（即单神经元网络），就能让agent有效地完成躲避障碍的任务了。</p>
+<a id="more"></a>
+<h2 id="让agent的生活变得艰难，因为生活是艰难的"><a href="#让agent的生活变得艰难，因为生活是艰难的" class="headerlink" title="让agent的生活变得艰难，因为生活是艰难的"></a>让agent的生活变得艰难，因为生活是艰难的</h2><p>我想让事情有趣点，所以加了几个额外的条件让任务更困难。</p>
+<ol>
+<li><p>运动被限制在严格版本的<a href="http://www.red3d.com/cwr/steer/" target="_blank" rel="noopener">Reynolds转向</a>下，如<a href="http://www.cs.uu.nl/docs/vakken/mcrs/papers/8.pdf" target="_blank" rel="noopener">这篇论文</a>中概述的创建逼真的模拟行为这样，与之相对应的是可以向任意方向自由移动。</p>
+</li>
+<li><p>Agent可以选择向左或向右转向，但不能够直行。就像一辆没有动力的车转弯一样，它也必须在转弯时朝着所转的方向前进。我想看看agent能否发展出这样一种转向模式，即通过快速地在左转和右转之间切换从而向前移动。这样事情变得更加困难了，你可以想象驾驶一辆汽车时，为了能向前直行，只能不断地向左或向右打死方向盘。</p>
+</li>
+<li><p>Agent之间会互相碰撞，如果适应度函数是按这种方式设置的话，它们也许需要发展出一种策略来避开对方，要不然我内心的邪恶面会希望它们一起跑向木板。</p>
+</li>
+</ol>
+<p>我发现有了这些限制，agent就不能依靠一个简单的单神经元完成这一任务了。我仍然认为这一任务不应当依靠类似ESP或NEAT等高级的方法，我想用现成的<a href="http://cs.stanford.edu/people/karpathy/convnetjs/" target="_blank" rel="noopener">convnet.js</a>库来生成神经网络，所以我选择了在<a href="http://blog.otoro.net/2015/03/28/neural-slime-volleyball/" target="_blank" rel="noopener">neural slime volleyball</a>项目中使用过的同样超级简单的神经网络结构。下面是我的第一次尝试：</p>
+<iframe src="https://instagram.com/p/1qJiRMwiaw/embed/captioned/?v=4" width="80%"></iframe>
+
+<p>每一个agent的大脑由十个神经元组成，每个神经元都和所有的输入及其余的神经元相连接，也许就像真实大脑的中一个小区域的切片一样。下面是大脑的原理图：</p>
+<p><img src="/asset/images/2016-03-01-planks_net_8_recurrent.png" alt="basic diagram of the neural network"><br><strong>神经网络的基本图解——每个大脑有269个权重值</strong></p>
+<p>这种网络结构被称作<a href="http://en.wikipedia.org/wiki/Recurrent_neural_network#Fully_recurrent_network" target="_blank" rel="noopener">全连接的递归网络（fully connected recurrent network）</a>。每一个agent都有一组将送入递归网络中的感知输入。10个神经元中的2个将控制agent的动作，其它的是用于计算和思考的“隐藏神经元单元”。所有的神经元输出信号又将送回输入层，所以每一个神经元都与其它的神经元完全连接起来了，这中间会有一帧（~1/30s）的时间延迟。</p>
+<p>输出层的第一个神经元用于控制agent是向左还是向右转，取决于输出的信号。我们使用<a href="http://mathworld.wolfram.com/HyperbolicTangent.html" target="_blank" rel="noopener">双曲正切</a>函数来启动神经元，因为神经元的输出值在-1至1之间，所以做这样的一个二元选择（左/右）是很自然的。第二个神经元控制agent是移动还是保持静止，也取决于输出信号。</p>
+<h2 id="训练网络"><a href="#训练网络" class="headerlink" title="训练网络"></a>训练网络</h2><p>100个初始化为随机权重值的agent被用于训练，它们会在模拟中四处跑动直到它们被一块木板杀死。在模拟的最后所有人都死了，这种感觉很糟糕，但是人固有一死……</p>
+<p>当所有的agent在一次模拟中全都死亡了之后，我们保留在模拟中存活了最长时间的30个agent的基因用于下一代，丢弃其余的70个agent。最好的30个基因，即神经连接的权值和偏置（bias）的向量，将会进行交叉变异以传递给下一代中新产生的70个agent。这个过程（将在下面的繁殖部分解释）将会持续进行，直到最好的agent能够熟练地躲开木板并存活五分钟以上。</p>
+<p>下面是一个运行中的进化模拟<a href="http://otoro.net/planks/training.html" target="_blank" rel="noopener">demo</a>，它的第一代是完全随机的网络（我将这个demo缩减为50个agent而不是100个，这样在大部分电脑甚至是智能手机上都能够运行）。起初，大部分的agent都不会试图存活下去（或者直接放弃了！），但是也许一个或两个知道该干些什么并且做的好了些，所以它们能够进入下一代并且进行繁殖。在几代过后，你会看到种群的能力增加了，它们全都开始躲避移动的木板了。我惊讶地发现，在30代后结果就不错了。如果你感兴趣，可以看一下这个<a href="http://otoro.net/planks/training.html" target="_blank" rel="noopener">训练demo</a>中它们是如何从开始时完全不知道如何生存进化到这一步的。注意这些结果是每十代更新一次的。因为我希望它们尽可能快的进化，而不是将进化限制在每秒30帧，所以把模拟运行到电脑能允许的最快速度，而每隔十代运行一次作为展示的模拟，因此你可以品评实时的进度——而实际的进化是在屏幕之后以光速进行的。</p>
+<p><img src="/asset/images/2016-03-01-planks_training-1024x1022.png" alt=""><br><strong>训练的草图——观看agent如何从一无所知进化而来</strong></p>
+<p>Agent周围的线条是它的知觉传感器，就像视觉输入一样，它们给每一个agent提供了周围世界的感知能力。Agent感知到的物体越近则线条的强度越大。每个agent能够看到周围的8个方向，探测距离最大为其身体半径的12倍。我是这样决定信号值的，agent探测到的物体越近，信号越接近一，反之，若没有探测到物体，信号为零。如果agent看到的物体距离为6倍半径，则信号为0.25而不是0.5，这里我为了模仿<a href="http://en.wikipedia.org/wiki/Inverse-square_law" target="_blank" rel="noopener">光照密度模型</a>将结果进行了平方。</p>
+<h2 id="如果Wayne-Gretzky在有孩子之前就遭遇了车祸会如何？"><a href="#如果Wayne-Gretzky在有孩子之前就遭遇了车祸会如何？" class="headerlink" title="如果Wayne Gretzky在有孩子之前就遭遇了车祸会如何？"></a>如果Wayne Gretzky在有孩子之前就遭遇了车祸会如何？</h2><p><em>[译者注]：Wayne Gretzky是著名的加拿大冰球运动员</em></p>
+<p>我也给上面提到的训练算法进行了一点微调。</p>
+<p>现在的一个问题是一些表现最好的agent可能会意外死亡，即使它们很厉害，但因为模拟中agent之间太拥挤了，它也会因为纯粹运气不好而死掉。上一代的一个顶尖的躲避墙的agent，起始位置可能是在人群的边缘，在模拟开始时就会被其它的几个agent意外的推到木板上面，这就不能把它的好基因传给下一代了。</p>
+<p>我想了一下这个问题，想出了一个主意，在进化算法中加入一个“名人堂”部分，这将会记下那些达到了最佳记录分数的agent的基因。我也修改了我的<a href="https://github.com/hardmaru/convnetjs/tree/master/neuroevolution" target="_blank" rel="noopener">进化库</a>来加入这个名人堂特性，以保留历来的十佳冠军。对于每一次模拟，名人堂都会加入被加入到当前的这一代。从这层意义上来说，每一代的agent都必须和历来最好的agent竞争。想象一下能够在每一个冰球赛季都和Wayne Gretzkey, Doug Gilmour及Tim Horton一起训练！</p>
+<p>这个技术绝对极大提升了进化的结果，因为最好的基因都被强制加入到了种群中。如果这发生在现实生活中会很恐怖的（虽然我们可能很快就将达到这一步了……）。我认为我在进化计算的世界里发现了一个伟大的新技术，这是一个突破！然而，我发现名人堂技术<a href="http://www.cs.utexas.edu/users/nn/pages/research/ne-applications.html" target="_blank" rel="noopener">已经在围棋领域中被用于</a>神经进化了。好吧，这对我不是好消息。</p>
+<p>我想看看如果我重新进化一遍，agent是否会表现地完全不同，于是我花了几天训练了不同的几组agent，每一组都有一千代左右。事实证明大部分的agent最终都有相似的权值模式。为了知道每个agent的大脑看起来有何不同，我将表现最好的agent的“基因代码”画成了图，为了图中的效果我将四个权值作为一组合成了一个颜色（RGBA的四个通道）。</p>
+<p><img src="/asset/images/2016-03-01-plank_boid_genes-1024x1024.png" alt=""><br><strong>每一行代表进化最成功的神经网络的权值</strong></p>
+<p>可以看出表现最好的agent除了些许差别外似乎都差不多。然而，这可能会导致一个问题，即它们可能都被限制在一个局部优化状态。我可以想象在某些情境中，agent为了避开木板而趋向于发展出相同的次最优策略，而由于任务的难度的限制就不会有新的进展了。如果使用更高级的方法可以解决这一问题，但是我对现在用简单的<a href="http://blog.otoro.net/2015/02/06/conventional-neuroevolution-cne-trainer-part-ii/" target="_blank" rel="noopener">卷积神经进化</a>生成的递归网络已经很满意了。我在demo中使用了最好的23个基因。最终的模拟将会利用从这个训练完成的组中随机挑选出的名人堂来进行初始化。</p>
+<h2 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h2><p>在经过约一千代的训练后，agent已经能不错地躲避障碍了。请看这个<a href="http://otoro.net/planks" target="_blank" rel="noopener">demo</a>中的最终结果。Agent还远不够完美，但是它们展示出的像昆虫般的行为让我觉得很有趣。我很惊讶，即使它们被限制成只能全力左转或右转，它们仍然能够完成躲避木板的任务。在demo中，每个agent有一只手，用于显示它们转的方向。没有手则表示保持静止。我也很高兴的看到当agent想朝一个方向前进时，它能在空白区域摇摆向前，看来它们通过左转和右转间的切换发展出了某种模式。</p>
+<p><img src="/asset/images/2016-03-01-planks_final_result1-1024x576.png" alt=""><br><strong>最终模拟——otoro.net/planks</strong></p>
+<p>我也注意到它们倾向于和其它agent聚在一起并努力待在中间，我不确定原因。也许是因为在人群的中间，它可以等待其它agent死去从而增加自己存活的几率。我也考虑过在适应度函数中使用与种群平均值有关的<em>相对生命长度</em>，而不是绝对生命长度。也许在一个更复杂的网络中，这能够诱使agent变得邪恶且会计划杀死其他agent。</p>
+<h2 id="繁殖"><a href="#繁殖" class="headerlink" title="繁殖"></a>繁殖</h2><p><img src="/asset/images/2016-03-01-planks_mating.png" alt=""><br><strong>带有父母双方基因的后代</strong></p>
+<p>与其每一次都等着所有的agent死亡然后创造下一代，不如让demo更有趣些，于是我给agent添加了配对和产生后代的能力！在以后这可能会形成一个可供选择的让agent进化的代内方法，而不是将每一代的种群数量固定为常数。</p>
+<p>它工作的原理是对于每个agent，如果它们能够生存某一个随机的时间（一般为30至60秒），它们将具有繁殖的能力。如果这样的两个agent相遇了，就会产生两个后代。后代初始时体积会小一点，在约30-60秒后会长到成年大小。父代agent的“激励时钟”重置为零，必须再等30-60秒才能产生下一代……</p>
+<p><img src="/asset/images/2016-03-01-planks_crossover-1024x440.png" alt=""><br><strong>交叉算法（维基百科）</strong></p>
+<p>两个后代将会继承父母双方的基因，这是通过很简单的一点<a href="http://en.wikipedia.org/wiki/Crossover_%28genetic_algorithm%29" target="_blank" rel="noopener">交叉方法</a>。所以第一个孩子将会从第一个父代那里继承第一段神经网络的权值，剩下的来自第二个父代。如上图中描述的一样，截断点是随机的。我还额外地给每一个孩子增加了随机变异，所以它们将具有独特性。这个随机的变异对于鼓励创新和给种群的基因库添加新元素是很重要的。</p>
+<p>从原理上说表现越好的agent有越高的生存几率，因此它们有更高的几率产生携带其基因的后代，反之较弱的个体会在拥有孩子之前死去。虽然有时很好的个体会因为不走运而死的太早，这对于它们确实不太好——这就是生活——生活是不公平的，而且生活很艰难！</p>
+<h2 id="与agent互动——扮演上帝"><a href="#与agent互动——扮演上帝" class="headerlink" title="与agent互动——扮演上帝"></a>与agent互动——扮演上帝</h2><p>当使用demo时，你可以点击屏幕的空白部分来创建新的agent加入模拟。一个新的agent的初始基因是从最近的几个试图产生后代的agent中随机选择出的，如果所有的agent都未繁殖过，那就从名人堂最初的一组中选择。</p>
+<p>如果你点击到了木板上，将会切换到下一个视觉模式，例如，X射线模式，无边框模式，没有手的纯粹生物模式等等。我用这些模式来评估不同的设计和总体的美感。我认为X射线模式看起来很酷，而且在较慢的机器上也能运行的更快。</p>
+<p><img src="/asset/images/2016-03-01-planks_xray-300x300.png" alt=""><br><strong>X射线模式</strong></p>
+<p>你也可以通过点击agent来给它们施加一个强大的推力。这模拟了一个暂时的风力效果，将它们从被点击的地方推开。</p>
+<p>你也可以在屏幕上拖动画线来创建一块新的木板。依据所画的方向，木板会沿着其垂直方向向左或向右移动。你可以看到在你释放了一些木板去摧毁它们的文明时，agent是如何反应的。请善用这个新能力，我注意到在没有这个特性之前，用户会给小家伙们加油，但是知道了这个功能后，他们开始准备种族灭绝了！</p>
+<h2 id="设计和开发的考虑"><a href="#设计和开发的考虑" class="headerlink" title="设计和开发的考虑"></a>设计和开发的考虑</h2><p>（这一部分暂未翻译）</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+            <a href="/tags/神经网络/" rel="tag"># 神经网络</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/27/text-align-justify-one-line/" rel="next" title="实现单行文本的左右对齐">
+                <i class="fa fa-chevron-left"></i> 实现单行文本的左右对齐
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/25/chrome-extension-zhihufilter/" rel="prev" title="开发一个用于屏蔽知乎网内容的Chrome扩展">
+                开发一个用于屏蔽知乎网内容的Chrome扩展 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="noiron" />
+          <p class="site-author-name" itemprop="name">noiron</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/noiron" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:wukai2048@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/noiron" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      知乎
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#让agent的生活变得艰难，因为生活是艰难的"><span class="nav-number">1.</span> <span class="nav-text">让agent的生活变得艰难，因为生活是艰难的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练网络"><span class="nav-number">2.</span> <span class="nav-text">训练网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如果Wayne-Gretzky在有孩子之前就遭遇了车祸会如何？"><span class="nav-number">3.</span> <span class="nav-text">如果Wayne Gretzky在有孩子之前就遭遇了车祸会如何？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果分析"><span class="nav-number">4.</span> <span class="nav-text">结果分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#繁殖"><span class="nav-number">5.</span> <span class="nav-text">繁殖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与agent互动——扮演上帝"><span class="nav-number">6.</span> <span class="nav-text">与agent互动——扮演上帝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计和开发的考虑"><span class="nav-number">7.</span> <span class="nav-text">设计和开发的考虑</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noiron</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

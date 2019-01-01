@@ -281,6 +281,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2016/09/14/create-a-react-webpack-es6-project/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="noiron">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吴锴的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/14/create-a-react-webpack-es6-project/" itemprop="url">从头创建一个基于 React, webpack, babel 的模板项目</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-14T00:00:00+08:00">
+                2016-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>如果是一个刚接触 React 的新手，当学完了 React 的各种基本概念和语法之后，准备开始实际的开发工作时，他又会碰到各种新颖的名词：npm, webpack, babel, flux, es2015…… 如果以前接触过这些工具还好，否则为了建立一个简单的项目，还需要学习这一整套的流程，而在这中间又会碰上各种坑，这个过程将会非常痛苦。一个解决方案是去 GitHub 上寻找各种模板项目，用 React + webpack + … 作为关键字搜索可以发现许多别人创建的空项目，你可以在其基础上稍作修改然后开始开发。我在学习的过程中就是这么做的，但之后对其中的一些配置项仍是一知半解。</p>
+<p>我在这里从头开始创建一个模板项目，并将过程记录下来，一方面希望能给看到这篇文章的人以帮助，另一方面也是加深我自己的理解。</p>
+<p>最后完成的项目见这个项目：<a href="https://github.com/noiron/react-webpack-babel-boilerplate" target="_blank" rel="noopener">react-webpack-babel-boilerplate</a>，在建立这个项目过程中的步骤可见另一个项目：<a href="https://github.com/noiron/create-react-boilerplate-steps" target="_blank" rel="noopener">create-react-boilerplate-steps</a>，过程被分到了多个文件夹中。</p>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p>在开始之前先看看项目的文件结构：</p>
+<pre><code>- src
+  - index.js
+  - App.js
+- .babelrc
+- index.html
+- package.json
+- server.js
+- webpack.config.js
+</code></pre><p>以上就是我们的项目需要的全部文件了。</p>
+<p>接下来我会将这个项目的构建过程分解成几个步骤，你只要按照这些步骤依次进行即可。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/14/create-a-react-webpack-es6-project/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2016/06/19/write-a-simplest-todolist-with-reactjs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1462,141 +1599,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2016/01/04/tooltip-effect/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="noiron">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吴锴的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/01/04/tooltip-effect/" itemprop="url">学习笔记：用JavaScript实现提示框效果</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-04T00:00:00+08:00">
-                2016-01-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>提示框效果（tooltip）是常见的网页特效，它的功能是当用户将指针放置在控件上时为用户显示提示信息。</p>
-<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>我们将需要显示提示框的部分称为：<strong>tooltip 超链接</strong>。</p>
-<p>当鼠标移动到 tooltip 超链接上时，首先判断是否存在与之对应的提示框元素，如果存在就将其显示；不存在的话就用JavaScript代码创建一个新的 DOM 元素，然后将新建的 DOM 元素附在原来的 tooltip 超链接元素后面。</p>
-<p>每个ToolTip提示框都是一个 div 元素，新建 DOM 元素的格式是类似这样的：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"tooltip"</span> <span class="attr">id</span>=<span class="string">"xx"</span>&gt;</span> xxxxxx <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这里将用到两个函数：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.createElement();   <span class="comment">// 创建一个 HTML 元素</span></span><br><span class="line">.appendChild();     <span class="comment">// 添加元素</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/01/04/tooltip-effect/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1642,7 +1649,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1739,7 +1746,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

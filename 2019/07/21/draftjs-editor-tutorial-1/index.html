@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="编辑器,draft.js," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="吴锴的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片时，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。 我将代码开源在了这个项目 draft-editor 中，也可以在这里在线预览。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何">
+<meta name="keywords" content="编辑器,draft.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从插入图片功能的实现来介绍如何用 Draft.js 编写富文本编辑器">
+<meta property="og:url" content="http://noiron.github.io/2019/07/21/draftjs-editor-tutorial-1/index.html">
+<meta property="og:site_name" content="吴锴的博客">
+<meta property="og:description" content="在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片时，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。 我将代码开源在了这个项目 draft-editor 中，也可以在这里在线预览。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-01.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-02.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-03.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-04.png">
+<meta property="og:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-05.png">
+<meta property="og:updated_time" content="2019-07-21T10:23:25.605Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从插入图片功能的实现来介绍如何用 Draft.js 编写富文本编辑器">
+<meta name="twitter:description" content="在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片时，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。 我将代码开源在了这个项目 draft-editor 中，也可以在这里在线预览。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何">
+<meta name="twitter:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://noiron.github.io/2019/07/21/draftjs-editor-tutorial-1/"/>
+
+
+
+
+
+  <title>从插入图片功能的实现来介绍如何用 Draft.js 编写富文本编辑器 | 吴锴的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111511044-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吴锴的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life? Don't talk to me about life!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-demo">
+          <a href="/demo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            个人项目
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2019/07/21/draftjs-editor-tutorial-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="noiron">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吴锴的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从插入图片功能的实现来介绍如何用 Draft.js 编写富文本编辑器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-21T00:00:00+08:00">
+                2019-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片时，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。</p>
+<p>我将代码开源在了<a href="https://github.com/noiron/draft-editor" target="_blank" rel="noopener">这个项目 draft-editor</a> 中，也可以<a href="http://www.wukai.me/draft-editor/" target="_blank" rel="noopener">在这里在线预览</a>。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何在 Draft.js 编辑器中插入图片功能的实现。</p>
+<a id="more"></a>
+<h2 id="从一个基本的编辑器开始"><a href="#从一个基本的编辑器开始" class="headerlink" title="从一个基本的编辑器开始"></a>从一个基本的编辑器开始</h2><p>Draft.js 是 Facebook 推出的用于 React 的富文本编辑器框架，初始化一个最基本的 Draft.js 的代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> ‘react’;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> ‘react-dom’;</span><br><span class="line"><span class="keyword">import</span> &#123;Editor, EditorState&#125; <span class="keyword">from</span> ‘draft-js’;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyEditor</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line">    <span class="keyword">this</span>.state = &#123;<span class="attr">editorState</span>: EditorState.createEmpty()&#125;;</span><br><span class="line">    <span class="keyword">this</span>.onChange = <span class="function">(<span class="params">editorState</span>) =&gt;</span> <span class="keyword">this</span>.setState(&#123;editorState&#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;Editor editorState=&#123;<span class="keyword">this</span>.state.editorState&#125; onChange=&#123;<span class="keyword">this</span>.onChange&#125; /&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以<a href="https://codesandbox.io/s/basic-draft-editor-gzver" target="_blank" rel="noopener">在这里查看</a>。这里给 <code>Editor</code> 传入一个 <code>editorState</code> 属性，并绑定一个 <code>onChange</code>事件，当发生编辑操作时，返回一个新的 <code>editorState</code>。这样我们就得到了一个可以进行基本的文本操作的编辑器了。</p>
+<h2 id="Immutable-js-数据结构"><a href="#Immutable-js-数据结构" class="headerlink" title="Immutable.js 数据结构"></a>Immutable.js 数据结构</h2><p>在说明什么是 <code>EditorState</code> 及 Draft.js 对于数据的存储方式之前，需要简略介绍一下 <strong>Immutables.js</strong>。</p>
+<p>Draft.js 是利用 <a href="https://github.com/immutable-js/immutable-js" target="_blank" rel="noopener">Immutable.js</a>来保存数据的，正如其名，这是一种不可变的数据结构。对于一个 Immutable 的对象，你无法修改它本身，若想修改其值，只会返回一个新的修改后的对象。将这一点应用在编辑器上，用户的每一次修改都会生成一个最新的状态快照，就很容易实现撤销功能了。</p>
+<p>在 Draft.js 的使用过程中，可能会遇到下面这些数据结构。</p>
+<p><strong><code>Map</code></strong> 类似于 js 中的对象，用 <code>.set()</code> 和 <code>.get()</code> 方法进行写和读。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Immutable = require(‘immutable’);</span><br><span class="line"><span class="keyword">const</span> framework = Immutable.<span class="built_in">Map</span>(&#123; name: <span class="string">'React'</span>, age: <span class="number">6</span> &#125;);</span><br><span class="line"><span class="keyword">const</span> newFramework = client.<span class="keyword">set</span>(<span class="string">'name'</span>, <span class="string">'Vue'</span>);</span><br><span class="line">console.log(framework.<span class="keyword">get</span>(<span class="string">'name'</span>));</span><br></pre></td></tr></table></figure>
+<p><strong><code>OrderedMap</code></strong> 混合了 <code>object</code> 和 <code>array</code> 的特点。通过使用 <code>orderedMap.get(‘key’)</code> 和<br><code>orderedMap.set(‘key’, newValue)</code> 这两个方法，可以将它当成一个普通的 <code>object</code> 来使用。但和 <code>Map</code> 的不同点在于其中的 key 是按照被加入时的顺序排序的。</p>
+<p><strong><code>Record</code></strong> 也类似于 <code>Map</code>，但有一些不同之处。</p>
+<ul>
+<li>一个 <code>record</code> 一旦被初始化，就不能再添加新的 key 了</li>
+<li>你可以给一个 <code>record</code> 实例添加默认值</li>
+</ul>
+<p>还有一点，immutable 的对象，提供了 <code>toJS()</code>方法，可将其转成普通的 js 对象，这一方法在想查看其内部内容时非常有用。</p>
+<blockquote>
+<p>Immutable.js 参考文章：<a href="https://blog.jscrambler.com/immutable-data-immutable-js/" target="_blank" rel="noopener">Immutable Data with Immutable.js | Jscrambler Blog</a></p>
+</blockquote>
+<h2 id="Draft-是如何存储数据的"><a href="#Draft-是如何存储数据的" class="headerlink" title="Draft 是如何存储数据的"></a>Draft 是如何存储数据的</h2><h3 id="什么是-EditorState"><a href="#什么是-EditorState" class="headerlink" title="什么是 EditorState"></a>什么是 EditorState</h3><p>在创建基本的编辑器的时候，我们用到了 <code>EditorState</code>。  <code>EditorState</code> 是编辑器最顶层的状态对象，它是一个 Immutable Record  对象，保存了编辑器中全部的状态信息，包括文本状态、选中状态等。</p>
+<p>调用  <code>editorState.toJS()</code> 可将 immutable record 转换成一个普通的 object，打印出来如下：<br><img src="/asset/images/2019-07-21-draft-editor-01.png" alt=""></p>
+<p>简单地来看下其中的部分内容：</p>
+<ul>
+<li><code>currentContent</code> 是一个 <code>ContentState</code> 对象，存放的是当前编辑器中的内容</li>
+<li><code>selection</code> 中是当前选中的状态</li>
+<li><code>redoStack</code> 和 <code>undoStack</code> 就是撤销/重做栈，它是一个数组，存放的是 <code>ContentState</code> 类型的编辑器状态</li>
+<li><code>decorator</code> 会寻找特定的模式，并用特定的组件渲染出来</li>
+</ul>
+<h3 id="什么是-ContentState"><a href="#什么是-ContentState" class="headerlink" title="什么是 ContentState"></a>什么是 ContentState</h3><p>既然编辑器中的内容是存储在一个 <code>ContentState</code> 对象中，那么这个 <code>ContentState</code> 又是什么？</p>
+<p><code>ContentState</code> 也是一个 Immutable Record 对象，其中保存了编辑器里的全部内容和渲染前后的两个选中状态。可以通过 <code>EditorState.getCurrentContent()</code> 来获取当前的 <code>ContentState</code>，同样调用 <code>.toJS()</code> 后将它打印出来看下：<br><img src="/asset/images/2019-07-21-draft-editor-02.png" alt=""></p>
+<p><code>blockMap</code> 和 <code>entityMap</code> 里放置的就是编辑器中的 <code>block</code> 和 <code>entity</code>，它们是构建 Draft 编辑器的砖瓦。</p>
+<h3 id="什么是-ContentBlock-和-Entity"><a href="#什么是-ContentBlock-和-Entity" class="headerlink" title="什么是 ContentBlock 和 Entity"></a>什么是 ContentBlock 和 Entity</h3><p>一个 <code>ContentBlock</code> 表示一个编辑器内容中的一个独立的 block，即视觉上独立的一块。 </p>
+<p>以下图的编辑器作为一个例子，图中的四个红框标出的部分都是 block。在平时阅读文章时，内容是以段落为单位的，在编辑器中每个段落就是一个 block，如第一个和最后一个红框中的文字内容。第二个红框中是一张图片，它也是一个 block，但显示方式不同于普通的 block，为了自定义它的显示方式还需要额外做一些工作，后面会加以详细说明。</p>
+<p>还有一点需要稍作说明，第三个红框中虽然是空白，但它也是一个 block，只不过其中的文本为空而已。<br><img src="/asset/images/2019-07-21-draft-editor-03.png" alt=""></p>
+<p>此时，输出一下 <code>convertToRaw(currentContent)</code> ，看看其中的内容。注意这里的输出结构与上面的 <code>currentContent.toJS()</code> 略有所区别，这里只有 <code>blocks</code> 和 <code>entityMap</code> 这两项。<br><img src="/asset/images/2019-07-21-draft-editor-04.png" alt=""><br>可以看到 <code>blocks</code> 这个数组中依次存放了各个 <code>block</code> 的信息，每一个 <code>block</code> 都是一个 <code>contentBlock</code> 对象。</p>
+<p>每个 <code>contentBlock</code> 都有如下的几个属性值：</p>
+<ul>
+<li><code>key</code>: 标识出这是哪一个 block</li>
+<li><code>type</code>: 这是何种类型的 block</li>
+<li><code>text</code>: 其中的文字</li>
+<li>……</li>
+</ul>
+<p>Draft.js 中  <code>block</code> 的 <code>type</code> 有 unstyled，paragraph，header-one，atomic …… 等值，在 Draft.js 的文档中 <code>atomic</code> 类型对应的是 <code>&lt;figure /&gt;</code> 元素，我们也选取了它来实现插入图片的功能。</p>
+<p> 图中的这些 block 的除了第三个 key = “1u22q” 的 block 的 type 值是 <code>atomic</code> 外，其余的值都是 <code>“unstyled”</code>。再仔细看下这个 <code>atomic</code> 类型的 block：<br><img src="/asset/images/2019-07-21-draft-editor-05.png" alt=""></p>
+<p>除了 <code>key</code>，<code>text</code>，<code>type</code> 等值之外，在 <code>entityRanges</code> 这一项中保存它保存了使用到的 <code>entity</code> 的信息：offset 和 length 确定了 <code>entity</code> 在 block 中的范围，而 key 则能让我们去取出对应的 <code>entity</code>。</p>
+<p>回到上面的打印出的 <code>contentState</code>的内容，除了  <code>blocks</code> 数组外还有一个 <code>entityMap</code>对象。它是以 <code>entity</code> 的 <code>key</code> 作为键值的对象，里面保存了图片、链接等种类的 <code>entity</code> 信息，从中就可获得 <code>blocks</code> 所需要的 <code>entity</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">entityMap: &#123;</span><br><span class="line">	<span class="number">0</span>: &#123; <span class="attr">type</span>: <span class="string">"image"</span>, <span class="attr">mutability</span>: <span class="string">"IMUTABLE"</span>, <span class="attr">data</span>: &#123;&#125; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上介绍了 Draft.js 是如何对编辑器中的数据进行存储的，接下来会从代码实现的角度来说明插入图片是如何实现的。</p>
+<h2 id="插入图片的实现"><a href="#插入图片的实现" class="headerlink" title="插入图片的实现"></a>插入图片的实现</h2><h3 id="如何插入图片"><a href="#如何插入图片" class="headerlink" title="如何插入图片"></a>如何插入图片</h3><p>插入图片有着这样的流程：首先为图片创建一个 <code>entity</code>，然后创建一个带有这个 <code>entity</code> 的新 <code>EditorState</code>，然后更新即可。以下是关键部分的代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; AtomicBlockUtils &#125; <span class="keyword">from</span> <span class="string">'draft.js'</span>;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> editorState = <span class="keyword">this</span>.state.editorState;</span><br><span class="line"><span class="keyword">const</span> contentState = editorState.getCurrentContent();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 `contentState.createEntity` 创建一个 `entity`，指定其 `type` 为 `image`</span></span><br><span class="line"><span class="keyword">const</span> contentStateWithEntity = contentState.createEntity(</span><br><span class="line">  ‘image’,</span><br><span class="line">  ‘IMMUTABLE’,</span><br><span class="line">  &#123; src &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取新创建的 `entity` 的 key</span></span><br><span class="line"><span class="keyword">const</span> entityKey = contentStateWithEntity.getLastCreatedEntityKey();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 用 `EditorState.set()`  来建立一个带有这个 `entity` 的新的 EditorState </span></span><br><span class="line"><span class="keyword">const</span> newEditorState = EditorState.set(</span><br><span class="line">  editorState,</span><br><span class="line">  &#123; <span class="attr">currentContent</span>: contentStateWithEntity &#125;,</span><br><span class="line">  ‘create-entity’</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 利用`AtomicBlockUtils.insertAtomicBlock` 来插入一个新的 `block`</span></span><br><span class="line"><span class="keyword">this</span>.setState(&#123;</span><br><span class="line">  editorState: AtomicBlockUtils.insertAtomicBlock(newEditorState, entityKey, ‘ ‘)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<h3 id="如何使用-blockRendererFn-来渲染图片"><a href="#如何使用-blockRendererFn-来渲染图片" class="headerlink" title="如何使用 blockRendererFn 来渲染图片"></a>如何使用 blockRendererFn 来渲染图片</h3><p>上面我们已经见到了，一张图片是作为一个 <code>atomic</code> 类型的 block 插入的。Draft.js 提供了<code>blockRendererFn</code> 让我们可以自定义 <code>ContentBlock</code> 的渲染方式，给它传入一个函数后，由该函数来判断这个 block 的 <code>type</code> 是什么，然后决定如何渲染。</p>
+<p>以下的这段代码来自 <a href="https://draftjs.org/docs/advanced-topics-block-components" target="_blank" rel="noopener">Draft.js 的官方文档</a>，展示了如何处理一个  type 为 <code>atomic</code> 的 <code>ContentBlock</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myBlockRenderer</span>(<span class="params">contentBlock</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> type = contentBlock.getType();</span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">'atomic'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      component: MediaComponent,</span><br><span class="line">      editable: <span class="literal">false</span>,</span><br><span class="line">      props: &#123;</span><br><span class="line">        foo: <span class="string">'bar'</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Then...</span></span><br><span class="line"><span class="keyword">import</span> &#123;Editor&#125; <span class="keyword">from</span> <span class="string">'draft-js'</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EditorWithMedia</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">Editor</span> <span class="attr">...</span> <span class="attr">blockRendererFn</span>=<span class="string">&#123;myBlockRenderer&#125;</span> /&gt;</span>;</span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>可以看到这里传递了一个 <code>props</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">component: MediaComponent,</span><br><span class="line">props: &#123;</span><br><span class="line">	foo: <span class="string">'bar'</span>,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>结果等同于 <code>&lt;MediaComponent foo=&#39;bar&#39; /&gt;</code>，可以利用这里的 <code>props</code> 传入所需要的其他数据。</p>
+<p>这里我们就可以定义一个自己的 <code>MediaComponent</code> 来决定展现方式。因为不管是图片还是视频等其它的媒体类型，它们的 <code>type</code> 都是 <code>atomic</code>。在 <code>MediaComponent</code> 里就需要通过 <code>entity</code> 的 <code>type</code> 来确定其种类。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> entity = props.contentState.getEntity(props.block.getEntityAt(<span class="number">0</span>));</span><br><span class="line"><span class="keyword">const</span> &#123; src &#125; = entity.getData();	<span class="comment">// 取出图片的地址</span></span><br><span class="line"><span class="keyword">const</span> type = entity.getType();  <span class="comment">// 判断 entity 的 type 的</span></span><br></pre></td></tr></table></figure>
+<p>当 <code>entity</code> 的 <code>type</code> 是我们自定义的 <code>image</code> 时就可以返回 <code>&lt;Image /&gt;</code> 组件了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Image src=&#123;src&#125; /&gt; <span class="comment">// 自定义的图片组件 &lt;Image /&gt;</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/noiron/draft-editor/blob/master/src/components/entities/mediaBlockRenderer.js" target="_blank" rel="noopener">完整代码可见此文件</a></p>
+<h3 id="如何删除一张图片"><a href="#如何删除一张图片" class="headerlink" title="如何删除一张图片"></a>如何删除一张图片</h3><p>既然已经插入了图片，那么如何删除它呢？当然我们可以按键盘上的 Backspace 键来删除。也可以在图片的右上角加入一个 “X” 的图标，点击后删除该图片，实现方式如下。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">deleteImage = <span class="function">(<span class="params">block</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> editorState = <span class="keyword">this</span>.state.editorState;</span><br><span class="line">  <span class="keyword">const</span> contentState = editorState.getCurrentContent();</span><br><span class="line">  <span class="keyword">const</span> key = block.getKey();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> selection = editorState.getSelection();</span><br><span class="line">  <span class="keyword">const</span> selectionOfAtomicBlock = selection.merge(&#123;</span><br><span class="line">    anchorKey: key,</span><br><span class="line">    anchorOffset: <span class="number">0</span>,</span><br><span class="line">    focusKey: key,</span><br><span class="line">    focusOffset: block.getLength(),</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 重写 entity 数据，将其从 block 中移除，防止这个 entity 还被其它的 block 引用</span></span><br><span class="line">  <span class="keyword">const</span> contentStateWithoutEntity = Modifier.applyEntity(contentState, selectionOfAtomicBlock, <span class="literal">null</span>);</span><br><span class="line">  <span class="keyword">const</span> editorStateWithoutEntity = EditorState.push(editorState, contentStateWithoutEntity, ‘apply-entity’);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 移除 block</span></span><br><span class="line">  <span class="keyword">const</span> contentStateWithoutBlock = Modifier.removeRange(contentStateWithoutEntity, selectionOfAtomicBlock, ‘backward’);</span><br><span class="line">  <span class="keyword">const</span> newEditorState =  EditorState.push(editorStateWithoutEntity, contentStateWithoutBlock, ‘remove-range’,);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.onChange(newEditorState);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，对图片的相关操作就完成了。</p>
+<h2 id="总结与其他"><a href="#总结与其他" class="headerlink" title="总结与其他"></a>总结与其他</h2><p>在本文中，介绍了 Draft.js 的基本功能，它是如何进行数据的存储的，及 <code>EditorState</code>、<code>ContentState</code>、<code>ContentBlock</code>、<code>Entity</code> 等对象间的关系。并以此为基础说明了如何在编辑器中对图片进行操作。</p>
+<p>当然关于 Draft.js 还有很多内容没有在本文中提及，如修改行内文本的样式，利用 <code>decorators</code> 来插入与渲染链接等等。这些就需要读者探索下 Draft.js 的官方文档和其他人的分享并亲自尝试下了。</p>
+<h2 id="参考文章及资源"><a href="#参考文章及资源" class="headerlink" title="参考文章及资源"></a>参考文章及资源</h2><blockquote>
+<p><a href="https://github.com/noiron/draft-editor" target="_blank" rel="noopener">本文所基于的编辑器项目：draft-editor</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://medium.com/@rajaraodv/how-draft-js-represents-rich-text-data-eeabb5f25cf2#.q7vpkxmog" target="_blank" rel="noopener">How Draft.js Represents Rich Text Data</a><br><a href="https://medium.com/@siobhanpmahoney/building-a-rich-text-editor-with-react-and-draft-js-part-2-4-persisting-data-to-server-cd68e81c820" target="_blank" rel="noopener">Building a Rich Text Editor with React and Draft.js, Part 2.4: Embedding Images</a><br><a href="https://zhuanlan.zhihu.com/p/24951621" target="_blank" rel="noopener">Draft.js 在知乎的实践</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编辑器/" rel="tag"># 编辑器</a>
+          
+            <a href="/tags/draft-js/" rel="tag"># draft.js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/01/2018-annual-summary/" rel="next" title="2018年总结">
+                <i class="fa fa-chevron-left"></i> 2018年总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="noiron" />
+          <p class="site-author-name" itemprop="name">noiron</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/noiron" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:wukai2048@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/noiron" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      知乎
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#从一个基本的编辑器开始"><span class="nav-number">1.</span> <span class="nav-text">从一个基本的编辑器开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Immutable-js-数据结构"><span class="nav-number">2.</span> <span class="nav-text">Immutable.js 数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Draft-是如何存储数据的"><span class="nav-number">3.</span> <span class="nav-text">Draft 是如何存储数据的</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是-EditorState"><span class="nav-number">3.1.</span> <span class="nav-text">什么是 EditorState</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是-ContentState"><span class="nav-number">3.2.</span> <span class="nav-text">什么是 ContentState</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是-ContentBlock-和-Entity"><span class="nav-number">3.3.</span> <span class="nav-text">什么是 ContentBlock 和 Entity</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入图片的实现"><span class="nav-number">4.</span> <span class="nav-text">插入图片的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何插入图片"><span class="nav-number">4.1.</span> <span class="nav-text">如何插入图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何使用-blockRendererFn-来渲染图片"><span class="nav-number">4.2.</span> <span class="nav-text">如何使用 blockRendererFn 来渲染图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何删除一张图片"><span class="nav-number">4.3.</span> <span class="nav-text">如何删除一张图片</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结与其他"><span class="nav-number">5.</span> <span class="nav-text">总结与其他</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章及资源"><span class="nav-number">6.</span> <span class="nav-text">参考文章及资源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noiron</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

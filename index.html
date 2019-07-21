@@ -281,6 +281,131 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2019/07/21/draftjs-editor-tutorial-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="noiron">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吴锴的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/21/draftjs-editor-tutorial-1/" itemprop="url">从插入图片功能的实现来介绍如何用 Draft.js 编写富文本编辑器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-21T00:00:00+08:00">
+                2019-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片时，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。</p>
+<p>我将代码开源在了<a href="https://github.com/noiron/draft-editor" target="_blank" rel="noopener">这个项目 draft-editor</a> 中，也可以<a href="http://www.wukai.me/draft-editor/" target="_blank" rel="noopener">在这里在线预览</a>。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何在 Draft.js 编辑器中插入图片功能的实现。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/21/draftjs-editor-tutorial-1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2019/01/01/2018-annual-summary/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1409,145 +1534,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2017/03/05/lesson-note-build-a-javascript-development-environment/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="noiron">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吴锴的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/05/lesson-note-build-a-javascript-development-environment/" itemprop="url">课程笔记--Building a javascript development environment</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-05T00:00:00+08:00">
-                2017-03-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>这篇博客是我在学习 <a href="https://app.pluralsight.com/library/courses/javascript-development-environment/recommended-courses" target="_blank" rel="noopener">Pluralsight上的课程：Building a JavaScript Development Environment</a> 时记下的笔记，仅作个人记录之用。</p>
-<p>这门课程系统地介绍了前端开发中的许多工具和术语，从编辑器的选择到项目的部署都进行了介绍，我在学习了这个课程后感觉将之前零散学习的内容串了起来。</p>
-<p>顺便一说，Pluralsight网站上面有许多不错的课程，不过价格太贵，需每月付29美元😥。但是，你可以用微软账号加入<a href="https://www.visualstudio.com/zh-hans/dev-essentials/" target="_blank" rel="noopener">Visual Studio Dev Essentials 计划</a>，这样就可以免费获得Pluralsight 3个月的订阅了😀。</p>
-<hr>
-<h2 id="1-Course-Overview"><a href="#1-Course-Overview" class="headerlink" title="1. Course Overview"></a>1. Course Overview</h2><p>编程的时候要做许多选择</p>
-<ul>
-<li>Editor</li>
-<li>Module format</li>
-<li>HTML generation</li>
-<li>Transpiling</li>
-<li>Bundler</li>
-<li>Linting</li>
-<li>Testing</li>
-<li>…</li>
-</ul>
-<p>这门课程介绍了如何在这些选项中做出选择</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/03/05/lesson-note-build-a-javascript-development-environment/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1598,7 +1584,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1611,7 +1597,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

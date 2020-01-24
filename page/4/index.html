@@ -281,6 +281,147 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2015/04/18/用Python写爬虫程序获得煎蛋网上的段子/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="noiron">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吴锴的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/04/18/用Python写爬虫程序获得煎蛋网上的段子/" itemprop="url">用Python写爬虫程序获得煎蛋网上的段子</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-18T00:00:00+08:00">
+                2015-04-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>这段时间看了一些爬虫的程序，因此想可以写一个程序来爬取煎蛋网的段子栏目，这样就可以直接在命令行下面看段子，还可以过滤掉一些质量低的段子。</p>
+<p>我们的爬虫程序需要定义一个<code>Spider_Model</code>class作为程序的主体，类包含以下的几个函数：</p>
+<ol>
+<li><p><code>__init__</code>：一些变量的初始化。</p>
+</li>
+<li><p><code>GetPage</code>：根据要求的URL链接提取所有的段子添加到列表中并且返回列表</p>
+</li>
+<li><p><code>LoadPage</code>：如果当前已保存的页面小于2个，则调用<code>GetPage</code>获取新的页面</p>
+</li>
+<li><p><code>ShowPage</code>：根据需要的格式显示段子内容、赞数、反对数</p>
+</li>
+<li><p><code>Start</code>：程序从这里开始</p>
+</li>
+</ol>
+<p>煎蛋网段子的网址是以下这种形式的：</p>
+<pre><code>http://jandan.net/duan/page-328#comments
+</code></pre><p>在程序中可以根据修改中间数字的而到达不同的页面。</p>
+<p>为了能用Python来找出段子的位置，就要利用到正则表达式，在程序的开始要<code>import re</code>。首先查看一下网页源代码：<br><img src="/asset/images/2015-04-18-jandan_source_code.png" alt=""></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/04/18/用Python写爬虫程序获得煎蛋网上的段子/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2015/04/09/Python中的str与unicode处理方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -582,7 +723,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -679,7 +820,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

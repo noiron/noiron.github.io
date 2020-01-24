@@ -96,23 +96,23 @@
 
 
 
-<meta name="description" content="在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片时，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。 我将代码开源在了这个项目 draft-editor 中，也可以在这里在线预览。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何">
+<meta name="description" content="在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。 我将代码开源在了这个项目 draft-editor 中，也可以在这里在线预览。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何在">
 <meta name="keywords" content="编辑器,draft.js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="从插入图片功能的实现来介绍如何用 Draft.js 编写富文本编辑器">
+<meta property="og:title" content="从插入图片功能的实现来介绍 Draft.js 富文本编辑器">
 <meta property="og:url" content="http://noiron.github.io/2019/07/21/draftjs-editor-tutorial-1/index.html">
 <meta property="og:site_name" content="吴锴的博客">
-<meta property="og:description" content="在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片时，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。 我将代码开源在了这个项目 draft-editor 中，也可以在这里在线预览。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何">
+<meta property="og:description" content="在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。 我将代码开源在了这个项目 draft-editor 中，也可以在这里在线预览。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何在">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-01.png">
 <meta property="og:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-02.png">
 <meta property="og:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-03.png">
 <meta property="og:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-04.png">
 <meta property="og:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-05.png">
-<meta property="og:updated_time" content="2019-07-21T10:23:25.605Z">
+<meta property="og:updated_time" content="2020-01-24T05:47:05.762Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="从插入图片功能的实现来介绍如何用 Draft.js 编写富文本编辑器">
-<meta name="twitter:description" content="在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片时，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。 我将代码开源在了这个项目 draft-editor 中，也可以在这里在线预览。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何">
+<meta name="twitter:title" content="从插入图片功能的实现来介绍 Draft.js 富文本编辑器">
+<meta name="twitter:description" content="在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。 我将代码开源在了这个项目 draft-editor 中，也可以在这里在线预览。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何在">
 <meta name="twitter:image" content="http://noiron.github.io/asset/images/2019-07-21-draft-editor-01.png">
 
 
@@ -148,7 +148,7 @@
 
 
 
-  <title>从插入图片功能的实现来介绍如何用 Draft.js 编写富文本编辑器 | 吴锴的博客</title>
+  <title>从插入图片功能的实现来介绍 Draft.js 富文本编辑器 | 吴锴的博客</title>
   
 
 
@@ -307,7 +307,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">从插入图片功能的实现来介绍如何用 Draft.js 编写富文本编辑器</h1>
+          <h1 class="post-title" itemprop="name headline">从插入图片功能的实现来介绍 Draft.js 富文本编辑器</h1>
         
 
         <div class="post-meta">
@@ -362,7 +362,7 @@
       
 
       
-        <p>在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片时，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。</p>
+        <p>在前段时间的工作中，我遇到了一个在桌面端和移动端进行图文混排编辑的需求。虽然如果只需要编辑纯文本和图片，不一定要使用富文本编辑器来实现。但是为了以后方便扩展，比如文本会有样式要求，我还是用 Draft.js 实现了一个功能较基础的富文本编辑器。</p>
 <p>我将代码开源在了<a href="https://github.com/noiron/draft-editor" target="_blank" rel="noopener">这个项目 draft-editor</a> 中，也可以<a href="http://www.wukai.me/draft-editor/" target="_blank" rel="noopener">在这里在线预览</a>。本文中我将介绍一下一些关于 Draft.js 的基础知识，并由此扩展到如何在 Draft.js 编辑器中插入图片功能的实现。</p>
 <a id="more"></a>
 <h2 id="从一个基本的编辑器开始"><a href="#从一个基本的编辑器开始" class="headerlink" title="从一个基本的编辑器开始"></a>从一个基本的编辑器开始</h2><p>Draft.js 是 Facebook 推出的用于 React 的富文本编辑器框架，初始化一个最基本的 Draft.js 的代码如下：</p>
@@ -372,7 +372,7 @@
 <p>Draft.js 是利用 <a href="https://github.com/immutable-js/immutable-js" target="_blank" rel="noopener">Immutable.js</a>来保存数据的，正如其名，这是一种不可变的数据结构。对于一个 Immutable 的对象，你无法修改它本身，若想修改其值，只会返回一个新的修改后的对象。将这一点应用在编辑器上，用户的每一次修改都会生成一个最新的状态快照，就很容易实现撤销功能了。</p>
 <p>在 Draft.js 的使用过程中，可能会遇到下面这些数据结构。</p>
 <p><strong><code>Map</code></strong> 类似于 js 中的对象，用 <code>.set()</code> 和 <code>.get()</code> 方法进行写和读。</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Immutable = require(‘immutable’);</span><br><span class="line"><span class="keyword">const</span> framework = Immutable.<span class="built_in">Map</span>(&#123; name: <span class="string">'React'</span>, age: <span class="number">6</span> &#125;);</span><br><span class="line"><span class="keyword">const</span> newFramework = client.<span class="keyword">set</span>(<span class="string">'name'</span>, <span class="string">'Vue'</span>);</span><br><span class="line">console.log(framework.<span class="keyword">get</span>(<span class="string">'name'</span>));</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const Immutable = require(‘immutable’);</span><br><span class="line">const framework = Immutable.Map(&#123; name: &apos;React&apos;, age: 6 &#125;);</span><br><span class="line">const newFramework = client.set(&apos;name&apos;, &apos;Vue&apos;);</span><br><span class="line">console.log(framework.get(&apos;name&apos;));</span><br></pre></td></tr></table></figure>
 <p><strong><code>OrderedMap</code></strong> 混合了 <code>object</code> 和 <code>array</code> 的特点。通过使用 <code>orderedMap.get(‘key’)</code> 和<br><code>orderedMap.set(‘key’, newValue)</code> 这两个方法，可以将它当成一个普通的 <code>object</code> 来使用。但和 <code>Map</code> 的不同点在于其中的 key 是按照被加入时的顺序排序的。</p>
 <p><strong><code>Record</code></strong> 也类似于 <code>Map</code>，但有一些不同之处。</p>
 <ul>
@@ -416,7 +416,7 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; AtomicBlockUtils &#125; <span class="keyword">from</span> <span class="string">'draft.js'</span>;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> editorState = <span class="keyword">this</span>.state.editorState;</span><br><span class="line"><span class="keyword">const</span> contentState = editorState.getCurrentContent();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 `contentState.createEntity` 创建一个 `entity`，指定其 `type` 为 `image`</span></span><br><span class="line"><span class="keyword">const</span> contentStateWithEntity = contentState.createEntity(</span><br><span class="line">  ‘image’,</span><br><span class="line">  ‘IMMUTABLE’,</span><br><span class="line">  &#123; src &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取新创建的 `entity` 的 key</span></span><br><span class="line"><span class="keyword">const</span> entityKey = contentStateWithEntity.getLastCreatedEntityKey();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 用 `EditorState.set()`  来建立一个带有这个 `entity` 的新的 EditorState </span></span><br><span class="line"><span class="keyword">const</span> newEditorState = EditorState.set(</span><br><span class="line">  editorState,</span><br><span class="line">  &#123; <span class="attr">currentContent</span>: contentStateWithEntity &#125;,</span><br><span class="line">  ‘create-entity’</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 利用`AtomicBlockUtils.insertAtomicBlock` 来插入一个新的 `block`</span></span><br><span class="line"><span class="keyword">this</span>.setState(&#123;</span><br><span class="line">  editorState: AtomicBlockUtils.insertAtomicBlock(newEditorState, entityKey, ‘ ‘)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
 <h3 id="如何使用-blockRendererFn-来渲染图片"><a href="#如何使用-blockRendererFn-来渲染图片" class="headerlink" title="如何使用 blockRendererFn 来渲染图片"></a>如何使用 blockRendererFn 来渲染图片</h3><p>上面我们已经见到了，一张图片是作为一个 <code>atomic</code> 类型的 block 插入的。Draft.js 提供了<code>blockRendererFn</code> 让我们可以自定义 <code>ContentBlock</code> 的渲染方式，给它传入一个函数后，由该函数来判断这个 block 的 <code>type</code> 是什么，然后决定如何渲染。</p>
 <p>以下的这段代码来自 <a href="https://draftjs.org/docs/advanced-topics-block-components" target="_blank" rel="noopener">Draft.js 的官方文档</a>，展示了如何处理一个  type 为 <code>atomic</code> 的 <code>ContentBlock</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myBlockRenderer</span>(<span class="params">contentBlock</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> type = contentBlock.getType();</span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">'atomic'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      component: MediaComponent,</span><br><span class="line">      editable: <span class="literal">false</span>,</span><br><span class="line">      props: &#123;</span><br><span class="line">        foo: <span class="string">'bar'</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Then...</span></span><br><span class="line"><span class="keyword">import</span> &#123;Editor&#125; <span class="keyword">from</span> <span class="string">'draft-js'</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EditorWithMedia</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">Editor</span> <span class="attr">...</span> <span class="attr">blockRendererFn</span>=<span class="string">&#123;myBlockRenderer&#125;</span> /&gt;</span>;</span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myBlockRenderer</span>(<span class="params">contentBlock</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> type = contentBlock.getType();</span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">'atomic'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      component: MediaComponent,</span><br><span class="line">      editable: <span class="literal">false</span>,</span><br><span class="line">      props: &#123;</span><br><span class="line">        foo: <span class="string">'bar'</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Then...</span></span><br><span class="line"><span class="keyword">import</span> &#123;Editor&#125; <span class="keyword">from</span> <span class="string">'draft-js'</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EditorWithMedia</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> &lt;Editor ... blockRendererFn=&#123;myBlockRenderer&#125; /&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以看到这里传递了一个 <code>props</code>：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">component: MediaComponent,</span><br><span class="line">props: &#123;</span><br><span class="line">	foo: <span class="string">'bar'</span>,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
 <p>结果等同于 <code>&lt;MediaComponent foo=&#39;bar&#39; /&gt;</code>，可以利用这里的 <code>props</code> 传入所需要的其他数据。</p>
@@ -477,6 +477,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/24/2019-annual-summary/" rel="prev" title="2019年总结">
+                2019年总结 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -553,7 +557,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -666,7 +670,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

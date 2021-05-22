@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="爬虫,node.js,puppeteer," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="吴锴的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Headless Browser 指的是没有图形用户界面（GUI）而是由程序控制的浏览器。Puppeteer 就是由 Google 推出的一种 headless browser。从 Puppeteer 的官方文档中可以看到它能做的事有很多：   Generate screenshots and PDFs of pages. Crawl a SPA (Single-Page Application)">
+<meta name="keywords" content="爬虫,node.js,puppeteer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Puppeteer 的使用记录">
+<meta property="og:url" content="http://noiron.github.io/2021/05/22/puppeteer-notes/index.html">
+<meta property="og:site_name" content="吴锴的博客">
+<meta property="og:description" content="Headless Browser 指的是没有图形用户界面（GUI）而是由程序控制的浏览器。Puppeteer 就是由 Google 推出的一种 headless browser。从 Puppeteer 的官方文档中可以看到它能做的事有很多：   Generate screenshots and PDFs of pages. Crawl a SPA (Single-Page Application)">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-22T14:26:44.648Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Puppeteer 的使用记录">
+<meta name="twitter:description" content="Headless Browser 指的是没有图形用户界面（GUI）而是由程序控制的浏览器。Puppeteer 就是由 Google 推出的一种 headless browser。从 Puppeteer 的官方文档中可以看到它能做的事有很多：   Generate screenshots and PDFs of pages. Crawl a SPA (Single-Page Application)">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://noiron.github.io/2021/05/22/puppeteer-notes/"/>
+
+
+
+
+
+  <title>Puppeteer 的使用记录 | 吴锴的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111511044-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吴锴的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Life? Don't talk to me about life!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-demo">
+          <a href="/demo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            个人项目
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://noiron.github.io/2021/05/22/puppeteer-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="noiron">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吴锴的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Puppeteer 的使用记录</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-22T00:00:00+08:00">
+                2021-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>Headless Browser</strong> 指的是没有图形用户界面（GUI）而是由程序控制的浏览器。<strong>Puppeteer</strong> 就是由 Google 推出的一种 headless browser。从 <a href="https://github.com/puppeteer/puppeteer" target="_blank" rel="noopener">Puppeteer 的官方文档</a>中可以看到它能做的事有很多：</p>
+<blockquote>
+<ul>
+<li>Generate screenshots and PDFs of pages.</li>
+<li>Crawl a SPA (Single-Page Application) and generate pre-rendered content (i.e. “SSR” (Server-Side Rendering)).</li>
+<li>Automate form submission, UI testing, keyboard input, etc.<br>…</li>
+</ul>
+</blockquote>
+<p>几乎所有能手动在 Chrome 进行的操作现在都可以用 Puppeteer 来完成。</p>
+<p>我之前在工作中就用到了 Puppeteer 做了一些页面爬取的工作，这里把使用到或者玩过的一些功能做了下总结和记录。这篇文章并不是一个全面的 Puppeteer 的使用教程，毕竟 Puppeteer 的大部分 API 我也没有使用过🙂。</p>
+<a id="more"></a>
+<h2 id="Puppeteer-的安装"><a href="#Puppeteer-的安装" class="headerlink" title="Puppeteer 的安装"></a>Puppeteer 的安装</h2><p>Puppeteer 的使用就是如同一个普通的 npm package 一样，使用 <code>npm init</code> 新建一个项目后，使用 <code>npm install puppeteer</code> 即可。如果安装过程中卡在了下载 Chromium 的过程中，可以考虑使用 <code>puppeteer-core</code> 来代替，具体可见</p>
+<p><a href="https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#puppeteer-vs-puppeteer-core" target="_blank" rel="noopener">puppeteer-vs-puppeteer-core</a></p>
+<h2 id="打开页面"><a href="#打开页面" class="headerlink" title="打开页面"></a>打开页面</h2><p>先由最基础的打开页面功能开始，新建一个 <code>index.js</code> 文件，写入下方的代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">'puppeteer'</span>);</span><br><span class="line"><span class="keyword">const</span> pageUrl = <span class="string">'https://github.com'</span>;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch();</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage();</span><br><span class="line">  <span class="keyword">await</span> page.goto(pageUrl, &#123; <span class="attr">waitUntil</span>: <span class="string">'networkidle0'</span> &#125;);</span><br><span class="line">  <span class="keyword">await</span> page.close();</span><br><span class="line">  <span class="keyword">await</span> browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>现在运行 <code>node index.js</code>，如果成功运行，你将会看到什么也没有发生😕。这是因为，Puppeteer 默认是在 <code>headless</code> 模式下运行的，为了能看到确实打开了页面，可以在打开浏览器时加入参数 <code>{ headless: false }</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">'puppeteer'</span>);</span><br><span class="line"><span class="keyword">const</span> pageUrl = <span class="string">'https://github.com'</span>;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="comment">// 这里将 headless 设置了为 false，表示打开图形界面</span></span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch(&#123; <span class="attr">headless</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage();</span><br><span class="line">  <span class="keyword">await</span> page.goto(pageUrl, &#123; <span class="attr">waitUntil</span>: <span class="string">'networkidle0'</span> &#125;);</span><br><span class="line">  <span class="keyword">await</span> page.close();</span><br><span class="line">  <span class="keyword">await</span> browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>一个典型的流程如下：打开浏览器 -&gt; 打开新页面 -&gt; 去往指定页面 -&gt; 关闭页面（可省略） -&gt; 关闭浏览器。</p>
+<h3 id="Timeout-问题的解决"><a href="#Timeout-问题的解决" class="headerlink" title="Timeout 问题的解决"></a>Timeout 问题的解决</h3><p>运行上面的代码，可能会出现 <code>TimeoutError</code> 的出错提示，这是因为访问指定页面的速度较慢导致了超时。你可以将 <code>pageUrl</code> 换成任意国内地址重试。</p>
+<p>默认情况下 Puppeteer 的超时时间为 30s，如果在 30s 之内没能打开页面，会有 timeout 的出错提示。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UnhandledPromiseRejectionWarning: TimeoutError: Navigation timeout of 30000 ms exceeded</span><br></pre></td></tr></table></figure></p>
+<p>可以通过如下设置解决：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage();</span><br><span class="line"><span class="comment">// 将超时时间改为了 60s，如果参数为0，则代表不做限制</span></span><br><span class="line">page.setDefaultNavigationTimeout(<span class="number">60000</span>);</span><br><span class="line"><span class="keyword">await</span> page.goto(pageUrl, &#123; <span class="attr">waitUntil</span>: <span class="string">'networkidle0'</span> &#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="操作页面"><a href="#操作页面" class="headerlink" title="操作页面"></a>操作页面</h2><h3 id="截图"><a href="#截图" class="headerlink" title="截图"></a>截图</h3><p>Puppeteer 提供了 <code>screenshot</code> API，可以将页面截图保存下来。运行下面的代码将会在 js 文件所在的路径下保存一张名为 <code>screenshot.png</code> 的图片文件。这里有一点需要注意，在之前的代码中，我们没有设置窗口的大小，Puppeteer 默认打开的是 <code>800*600</code>尺寸的窗口，截图的大小也为 <code>800*600</code>（即使是在 <code>headless</code> 模式下也是如此）。可以通过 <code>setViewport</code> 来改变窗口的大小。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">'puppeteer'</span>);</span><br><span class="line"><span class="keyword">const</span> pageUrl = <span class="string">'https://github.com'</span>;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch();</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage();</span><br><span class="line">  <span class="keyword">await</span> page.goto(pageUrl, &#123; <span class="attr">waitUntil</span>: <span class="string">'networkidle0'</span> &#125;);</span><br><span class="line">  <span class="comment">// 设置窗口的大小，可以注释下方的一行查看截图的区别</span></span><br><span class="line">  <span class="keyword">await</span> page.setViewport(&#123; <span class="attr">width</span>: <span class="number">1000</span>, <span class="attr">height</span>: <span class="number">500</span> &#125;);</span><br><span class="line">  <span class="keyword">await</span> page.screenshot(&#123;</span><br><span class="line">    path: path.join(__dirname, <span class="string">'screenshot.png'</span>),</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">await</span> page.close();</span><br><span class="line">  <span class="keyword">await</span> browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h3 id="生成-PDF"><a href="#生成-PDF" class="headerlink" title="生成 PDF"></a>生成 PDF</h3><p>同样也可以将页面保存成一个 PDF 文件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">'puppeteer'</span>);</span><br><span class="line"><span class="keyword">const</span> pageUrl = <span class="string">'https://github.com'</span>;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch();</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage();</span><br><span class="line">  <span class="keyword">await</span> page.goto(pageUrl, &#123; <span class="attr">waitUntil</span>: <span class="string">'networkidle0'</span> &#125;);</span><br><span class="line">  <span class="keyword">await</span> page.pdf(&#123; </span><br><span class="line">    path: path.join(__dirname, <span class="string">'page-pdf.pdf'</span>), </span><br><span class="line">    format: <span class="string">'A4'</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">await</span> page.close();</span><br><span class="line">  <span class="keyword">await</span> browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>注意一点，保存为 PDF 的时候，必须在 <code>headless</code> 模式下进行。</p>
+<h2 id="模拟设备"><a href="#模拟设备" class="headerlink" title="模拟设备"></a>模拟设备</h2><p>平时我们浏览的网站可能针对不同的设备会有不同的展示效果，区分移动端和PC端、Android 或 iOS 等。Puppeteer 就提供了模拟设备的功能。</p>
+<h3 id="使用已有的设备列表"><a href="#使用已有的设备列表" class="headerlink" title="使用已有的设备列表"></a>使用已有的设备列表</h3><p>可以使用 <code>page.emulate(options)</code> 来模拟设备，可以在这个文件中看到支持的设备列表：<a href="https://github.com/puppeteer/puppeteer/blob/main/src/common/DeviceDescriptors.ts" target="_blank" rel="noopener">puppeteer/DeviceDescriptors.ts at main · puppeteer/puppeteer · GitHub</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">'puppeteer'</span>);</span><br><span class="line"><span class="keyword">const</span> pageUrl = <span class="string">'https://github.com'</span>;</span><br><span class="line"><span class="comment">// 这里将模拟一台 iPhone XR 设备</span></span><br><span class="line"><span class="keyword">const</span> iPhone = puppeteer.devices[<span class="string">'iPhone XR'</span>];</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch(&#123; <span class="attr">headless</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage();</span><br><span class="line">  <span class="keyword">await</span> page.emulate(iPhone);</span><br><span class="line">  <span class="keyword">await</span> page.goto(pageUrl, &#123; <span class="attr">waitUntil</span>: <span class="string">'networkidle0'</span> &#125;);</span><br><span class="line">  <span class="keyword">await</span> browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h3 id="添加自定义的-UserAgent"><a href="#添加自定义的-UserAgent" class="headerlink" title="添加自定义的 UserAgent"></a>添加自定义的 UserAgent</h3><p>也可以添加自己的 UserAgent 的方式来模拟列表中没有的设备。下面的代码中以 iPad Pro 为例，说明如何设置 UserAgent（其实 iPad Pro 是存在于上面的设备列表中的，这里只是举了个例子）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">'puppeteer'</span>);</span><br><span class="line"><span class="keyword">const</span> pageUrl = <span class="string">'https://github.com'</span>;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch(&#123; <span class="attr">headless</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage();</span><br><span class="line">  <span class="keyword">await</span> page.setViewport(&#123; <span class="attr">width</span>: <span class="number">1024</span>, <span class="attr">height</span>: <span class="number">1366</span> &#125;);</span><br><span class="line">  <span class="keyword">await</span> page.setUserAgent(</span><br><span class="line">    <span class="string">'Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1'</span>,</span><br><span class="line">    );</span><br><span class="line">  <span class="keyword">await</span> page.goto(pageUrl, &#123; <span class="attr">waitUntil</span>: <span class="string">'networkidle0'</span> &#125;);</span><br><span class="line">  <span class="keyword">await</span> browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h2 id="监听-response"><a href="#监听-response" class="headerlink" title="监听 response"></a>监听 response</h2><p>考虑一下这样的场景，如何获取到页面上的所有的图片。当然我们可以拿到整个页面，然后使用 <code>document.querySelector()</code> 筛选出所有的 <code>img</code> 标签。这样会有一点小问题，如果图片是以 CSS  的 <code>background-image</code> 形式引入的，查找 <code>img</code> 标签是无法找到的。如果图片地址是由 js 动态改变的，可能也会缺失部分图片。</p>
+<p>另一种可选的方式是通过监听 <code>response</code> 的方式来处理。可以认为在 Chrome 开发工具的 Network Tab 下能看到的每一个 response 都可以在这里拿到。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">'puppeteer'</span>);</span><br><span class="line"><span class="keyword">const</span> pageUrl = <span class="string">'https://github.com'</span>;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch(&#123; <span class="attr">headless</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage();</span><br><span class="line"></span><br><span class="line">  page.on(<span class="string">'response'</span>, <span class="keyword">async</span> (response) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> request = response.request();</span><br><span class="line">    <span class="keyword">const</span> resourceType = request.resourceType();</span><br><span class="line">    <span class="keyword">const</span> contentType = response.headers()[<span class="string">'content-type'</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (resourceType === <span class="string">'image'</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> url = response.url();</span><br><span class="line">      <span class="built_in">console</span>.log(contentType, url);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> page.goto(pageUrl, &#123; <span class="attr">waitUntil</span>: <span class="string">'networkidle0'</span> &#125;);</span><br><span class="line">  <span class="keyword">await</span> browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>通过 <code>response.headers</code> 可以获取响应的 header 信息。如果有需要也可将响应保存成本地的文件。</p>
+<hr>
+<p>未完待续</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/爬虫/" rel="tag"># 爬虫</a>
+          
+            <a href="/tags/node-js/" rel="tag"># node.js</a>
+          
+            <a href="/tags/puppeteer/" rel="tag"># puppeteer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/24/2019-annual-summary/" rel="next" title="2019年总结">
+                <i class="fa fa-chevron-left"></i> 2019年总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="noiron" />
+          <p class="site-author-name" itemprop="name">noiron</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/noiron" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:wukai2048@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/noiron" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      知乎
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Puppeteer-的安装"><span class="nav-number">1.</span> <span class="nav-text">Puppeteer 的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打开页面"><span class="nav-number">2.</span> <span class="nav-text">打开页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Timeout-问题的解决"><span class="nav-number">2.1.</span> <span class="nav-text">Timeout 问题的解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作页面"><span class="nav-number">3.</span> <span class="nav-text">操作页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#截图"><span class="nav-number">3.1.</span> <span class="nav-text">截图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成-PDF"><span class="nav-number">3.2.</span> <span class="nav-text">生成 PDF</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟设备"><span class="nav-number">4.</span> <span class="nav-text">模拟设备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用已有的设备列表"><span class="nav-number">4.1.</span> <span class="nav-text">使用已有的设备列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加自定义的-UserAgent"><span class="nav-number">4.2.</span> <span class="nav-text">添加自定义的 UserAgent</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听-response"><span class="nav-number">5.</span> <span class="nav-text">监听 response</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noiron</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
